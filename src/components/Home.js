@@ -1,5 +1,3 @@
-
-
 // microsoft
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 

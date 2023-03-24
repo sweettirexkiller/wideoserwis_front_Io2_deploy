@@ -12,16 +12,16 @@ export const b2cPolicies = {
     },
     authorities: {
         signUpSignIn: {
-            authority: 'https://CreditComparer.b2clogin.com/CreditComparer.onmicrosoft.com/b2c_1_susi',
+            authority: 'https://videoserviceio.b2clogin.com/videoserviceIO.onmicrosoft.com/B2C_1_signup_signin',
         },
         forgotPassword: {
-            authority: 'https://CreditComparer.b2clogin.com/CreditComparer.onmicrosoft.com/B2C_1_reset_v3',
+            authority: 'https://videoserviceio.b2clogin.com/videoserviceIO.onmicrosoft.com/B2C_1_reset_v3',
         },
         editProfile: {
-            authority: 'https://CreditComparer.b2clogin.com/CreditComparer.onmicrosoft.com/b2c_1_edit_profile_v2',
+            authority: 'https://videoserviceio.b2clogin.com/videoserviceIO.onmicrosoft.com/B2C_1_edit_profile',
         },
     },
-    authorityDomain: "CreditComparer.b2clogin.com"
+    authorityDomain: "videoserviceio.b2clogin.com"
 }
 
 /**
@@ -29,7 +29,7 @@ export const b2cPolicies = {
  */
 export const msalConfig = {
     auth: {
-        clientId: "6a60b029-b850-496f-a7ab-427ae928bfbe", 
+        clientId: "eb4b9d66-1c02-4e17-93f5-18f7b58db519",
         authority: b2cPolicies.authorities.signUpSignIn.authority, 
         knownAuthorities: [b2cPolicies.authorityDomain], 
         redirectUri: "/",
@@ -73,10 +73,10 @@ export const msalConfig = {
  */
 export const protectedResources = {
     apiLoanComparer: {
-        endpoint: 'https://bank-project-backend-dev.azurewebsites.net/',
+        // endpoint: 'https://bank-project-backend-dev.azurewebsites.net/',
         scopes: {
-            read: ['https://CreditComparer.onmicrosoft.com/08b8fb66-4b9f-493a-b3d2-53158caeb956/access_as_user'],
-            write: ['https://CreditComparer.onmicrosoft.com/08b8fb66-4b9f-493a-b3d2-53158caeb956/access_as_user'],
+            read: ['https://videoserviceio.onmicrosoft.com/cfed5934-37d5-4415-86b6-45c04ed3aa6a/users.read'],
+            write: ['https://videoserviceio.onmicrosoft.com/cfed5934-37d5-4415-86b6-45c04ed3aa6a/users.write'],
         },
     },
 };
