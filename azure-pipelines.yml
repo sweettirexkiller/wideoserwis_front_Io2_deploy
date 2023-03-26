@@ -19,5 +19,5 @@ steps:
     npm cache clean --force
     rm -rf node_modules
     npm install
-    npm run build
+    npm start
   displayName: 'npm install and build'
