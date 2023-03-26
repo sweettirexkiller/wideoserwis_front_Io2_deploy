@@ -9,9 +9,7 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables:
-  projectFolder: 'src/react'
-  buildOutputFolder: 'src/react/build'
+
 
 steps:
 - task: NodeTool@0
@@ -26,15 +24,11 @@ steps:
     npm install
   displayName: 'npm install and build'
 
-
-## Archive the files into a zip file for publishing
-- task: ArchiveFiles@2
+- task: VSBuild@1
   inputs:
-    rootFolderOrFile: $(Build.ArtifactStagingDirectory)
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    includeRootFolder: false
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)" /p:DeployIisAppPath="VideoServiceAPI"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
 
 - task: PublishBuildArtifacts@1
-  inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
