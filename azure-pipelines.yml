@@ -18,6 +18,7 @@ steps:
 - script: |
     npm cache clean --force
     rm -rf node_modules
+    rm -rf package-lock.json
     npm install
     npm start
   displayName: 'npm install and build'
