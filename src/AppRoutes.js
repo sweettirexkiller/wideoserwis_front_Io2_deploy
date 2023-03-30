@@ -1,18 +1,14 @@
 import React from 'react';
 import { Home } from "./components/Home";
-import Login from "./features/auth/Login";
-import Register from "./features/auth/Register";
-import Settings from "./features/settings/Settings";
-import ForgotPassword from "./features/auth/ForgotPassword";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import ForgotPassword from "./components/ForgotPassword";
+import Profile from './components/Profile';
 
 const AppRoutes = [
   {
     index: true,
     element: <Home />
-  },
-  {
-    path: '/settings',
-    element: <Settings/>
   },
   {
     path: '/videos',
@@ -29,6 +25,10 @@ const AppRoutes = [
   {
     path: '/forgot-password',
     element: <ForgotPassword/>
+  },
+  {
+    path: '/profile',
+    element: <Profile/>
   }
 ];
 

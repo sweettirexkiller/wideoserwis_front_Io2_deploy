@@ -18,14 +18,20 @@ import {
   HamburgerIcon,
   CloseIcon,
   ChevronDownIcon,
-  ChevronRightIcon, ArrowForwardIcon, AddIcon, SettingsIcon,
+  ChevronRightIcon, ArrowForwardIcon, AddIcon,
 } from '@chakra-ui/icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { NavItem, NavLink } from 'reactstrap';
+import { useSelector } from 'react-redux';
+import EventBus from '../common/EventBus';
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const handleClick = (e) =>{
+    e.preventDefault();
+    EventBus.dispatch("logout");
+  }
 
   return (
     <Box>
@@ -70,6 +76,7 @@ export default function WithSubnavigation() {
           justify={'flex-end'}
           direction={'row'}
           spacing={6}>
+          {!currentUser &&
           <Link   to="/log-in">
             <Button rightIcon={<ArrowForwardIcon />}
                     fontSize={'sm'}
@@ -78,14 +85,29 @@ export default function WithSubnavigation() {
               Log In
             </Button>
           </Link>
-          <Link   to="/register">
-            <Button rightIcon={<AddIcon/>} colorScheme='blue'
+          }
+          {
+            currentUser &&
+            <Button rightIcon={<ArrowForwardIcon />}
                     fontSize={'sm'}
                     fontWeight={400}
-                    variant='outline'>
-              Sign up
+                    colorScheme='blue'
+                    onClick={handleClick}
+            >
+              Log Out
             </Button>
-          </Link>
+          }
+          {
+            !currentUser &&
+            <Link to="/register">
+              <Button rightIcon={<AddIcon />} colorScheme='blue'
+                      fontSize={'sm'}
+                      fontWeight={400}
+                      variant='outline'>
+                Sign up
+              </Button>
+            </Link>
+          }
         </Stack>
       </Flex>
 

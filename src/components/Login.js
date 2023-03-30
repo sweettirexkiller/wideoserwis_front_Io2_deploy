@@ -1,26 +1,31 @@
 import {
-    Flex,
-    VStack, Center, Text, FormControl, FormLabel, Input, FormErrorMessage, HStack,Button
+  Flex,
+  VStack, Center, Text, FormControl, FormLabel, Input, FormErrorMessage, HStack, Button, Spinner,
 } from '@chakra-ui/react';
 
-import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {useLoginMutation} from "../../api/authApiSlice";
+
+import { useDispatch, useSelector } from 'react-redux';
+
 import {Form, Formik} from "formik";
 import * as Yup from 'yup';
+import { useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { clearMessage } from '../slices/messege';
+import { login } from '../slices/auth';
 
 export default function Login() {
 
-    const navigate = useNavigate();
-
-    const [login, {isLoading}] = useLoginMutation();
     const dispatch = useDispatch();
-    const validateEmail = (email) => {
-        return email.match(
-            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
-    };
+    let navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
+
+  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { message } = useSelector((state) => state.message);
+
+  useEffect(() => {
+    dispatch(clearMessage());
+  }, [dispatch]);
 
   const FormSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -28,23 +33,36 @@ export default function Login() {
       .string()
       .min(8, 'Password must be 8 characters long')
       .matches(/[0-9]/, 'Password requires a number')
-      .matches(/[a-z]/, 'Password requires a lowercase letter')
+      // .matches(/[a-z]/, 'Password requires a lowercase letter')
       .matches(/[A-Z]/, 'Password requires an uppercase letter')
       .matches(/[^\w]/, 'Password requires a symbol')
   });
 
+  const handleLogin = (formValue) => {
+    const { email, password } = formValue;
+    setLoading(true);
+
+    dispatch(login({ email, password }))
+      .unwrap()
+      .then(() => {
+        navigate("/profile");
+        // window.location.reload();
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  };
+
+  if (isLoggedIn) {
+    return <Navigate to="/profile" />;
+  }
   return(
         <Center>
             <Flex>
             <Formik
                 initialValues={{ email: '', password: '' }}
                 validationSchema={FormSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
-                        setSubmitting(false);
-                    }, 400);
-                }}
+                onSubmit={handleLogin}
         >
             {({
                   values,
@@ -81,6 +99,9 @@ export default function Login() {
                         </FormControl>
                         <HStack w={'100%'} justifyContent={"space-evenly"}>
                             <Button onClick={(e)=>{handleSubmit()}} variant="solid" colorScheme='teal'>
+                              {loading && (
+                               <Spinner/>
+                              )}
                                 Log in
                             </Button>
                         </HStack>
@@ -89,5 +110,12 @@ export default function Login() {
                 )}
                 </Formik>
             </Flex>
+          {message && (
+            <div className="form-group">
+              <div className="alert alert-danger" role="alert">
+                {message}
+              </div>
+            </div>
+          )}
         </Center>);
 }

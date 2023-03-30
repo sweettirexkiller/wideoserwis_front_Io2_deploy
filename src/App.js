@@ -1,14 +1,33 @@
-import RequireAuth from "./features/auth/RequireAuth";
-import Welcome from "./features/auth/Welcome";
-import React, { Component } from 'react';
+import React, {useCallback, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
+import { useDispatch, useSelector } from "react-redux";
 
-export default class App extends Component {
-  static displayName = App.name;
+import { logout } from "./slices/auth";
 
-  render() {
+import EventBus from "./common/EventBus";
+
+const App = () => {
+
+  const { user: currentUser } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const logOut = useCallback(() => {
+    dispatch(logout());
+  }, [dispatch]);
+
+  useEffect(() => {
+    EventBus.on("logout", () => {
+      logOut();
+    });
+
+    return () => {
+      EventBus.remove("logout");
+    };
+    }, [currentUser, logOut]);
+
+
     return (
       <Layout>
         <Routes>
@@ -16,11 +35,9 @@ export default class App extends Component {
             const { element, ...rest } = route;
             return <Route key={index} {...rest} element={element} />;
           })}
-          <Route element={<RequireAuth/>}>
-            <Route path={"/welcome"} element={<Welcome/>}/>
-          </Route>
         </Routes>
       </Layout>
     );
-  }
 }
+
+export default App;
