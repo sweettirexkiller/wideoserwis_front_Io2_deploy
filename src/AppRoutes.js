@@ -29,6 +29,9 @@ const AppRoutes = [
   {
     path: '/profile',
     element: <Profile/>
+  },{
+    path: '/success-register',
+    element: <Profile/>
   }
 ];
 

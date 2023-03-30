@@ -15,6 +15,7 @@ import {
   Input, Select,
   VStack,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
@@ -22,6 +23,7 @@ const Register = () => {
 
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
+  let navigate = useNavigate();
 
   useEffect(() => {
     dispatch(clearMessage());
@@ -64,7 +66,7 @@ const Register = () => {
   });
 
   const handleRegister = (formValue) => {
-    const { nickName: nickname, firstName: name, surname: lastname, userType, email, password } = formValue;
+    const { nickName: nickname, firstname: name, surname: lastname, userType, email, password } = formValue;
 
     setSuccessful(false);
 
@@ -72,6 +74,7 @@ const Register = () => {
       .unwrap()
       .then(() => {
         setSuccessful(true);
+        navigate("/success-register");
       })
       .catch(() => {
         setSuccessful(false);
@@ -146,7 +149,7 @@ const Register = () => {
                 >
                   <FormLabel>User Type</FormLabel>
                   <Select placeholder='User type'
-                          name="usertype"
+                          name="userType"
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.userType}>

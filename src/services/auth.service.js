@@ -10,7 +10,7 @@ const register = ( nickname, name, lastname,userType,email, password) => {
     userType,
     email,
     password,
-    avatarImage: null
+    avatarImage: "twojamordka.png"
   });
 };
 
