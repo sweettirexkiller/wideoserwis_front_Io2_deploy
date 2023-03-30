@@ -1,40 +1,28 @@
-import { ColorModeScript } from '@chakra-ui/react';
 import React, { StrictMode } from 'react';
-import * as ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import {ChakraProvider} from '@chakra-ui/react';
+import { Provider } from 'react-redux'
+import store from "./store";
+
+import { ColorModeScript } from '@chakra-ui/react';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
-import { PublicClientApplication, EventType } from "@azure/msal-browser";
-import {msalConfig} from './authConfig';
 
-const container = document.getElementById('root');
-const root = ReactDOM.createRoot(container);
-
-
-export const msalInstance = new PublicClientApplication(msalConfig);
-
-// Default to using the first account if no account is active on page load
-if (!msalInstance.getActiveAccount() && msalInstance.getAllAccounts().length > 0) {
-  // Account selection logic is app dependent. Adjust as needed for different use cases.
-  msalInstance.setActiveAccount(msalInstance.getAllAccounts()[0]);
-}
-
-msalInstance.addEventCallback((event) => {
-  if (
-    (event.eventType === EventType.LOGIN_SUCCESS ||
-      event.eventType === EventType.ACQUIRE_TOKEN_SUCCESS ||
-      event.eventType === EventType.SSO_SILENT_SUCCESS) &&
-    event.payload.account
-  ) {
-    msalInstance.setActiveAccount(event.payload.account);
-  }
-});
-
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
 
 root.render(
   <StrictMode>
     <ColorModeScript />
-    <App instance={msalInstance}/>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ChakraProvider>
+            <App />
+          </ChakraProvider>
+        </BrowserRouter>
+      </Provider>
   </StrictMode>
 );
 

@@ -1,34 +1,37 @@
-// microsoft
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
+import React, { Component } from 'react';
+import {Center, Heading, Text, VStack, Box} from "@chakra-ui/react";
+import {Button, Container} from "reactstrap";
+import {Link} from "react-router-dom";
 
-// css 
-import '../styles/Home.css'
-import "../styles/Table.css"
 
-const Home = ({setRequestID}) => {
+export class Home extends Component {
+  static displayName = Home.name;
 
-    // const { instance } = useMsal();
-    // const { execute, isLoading } = useFetchWithMsal({
-    //     scopes: protectedResources.apiLoanComparer.scopes.read,
-    // });
-
+  render() {
     return (
-        <div className='Home'>
-            <div className='Home-text'>
-                <h1> Witamy na Filmy.pl </h1>
-            </div>
-            <div className='Home-offers'>
-                <div className='Home-offers-Whole'>
-                    <UnauthenticatedTemplate>
-                        Musisz być zalogowany żeby oglądać filmiki.
-                    </UnauthenticatedTemplate>
-                    <AuthenticatedTemplate>
-                       Jesteś zalogowany.Miłego oglądania.
-                    </AuthenticatedTemplate>
-                </div>
-            </div>
-        </div>
-    );
-}
+        <Box bg="gray.50">
+          <Container maxW="container.lg">
+            <Center p={4} minHeight="70vh">
+              <VStack>
+                <Container maxW="container.md" textAlign="center">
+                  <Heading size="2xl" mb={4} color="gray.700">
+                    Our videos are really cool.
+                  </Heading>
 
-export default Home;
+                  <Text fontSize="xl" color="gray.500">
+                   Best propaganda since Stalin.
+                  </Text>
+
+                    <Link   to="/videos">
+                        <Button mt={8} colorScheme="brand" >
+                            Search videos →
+                        </Button>
+                    </Link>
+                </Container>
+              </VStack>
+            </Center>
+          </Container>
+        </Box>
+    );
+  }
+}
