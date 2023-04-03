@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ForgotPassword from "./components/ForgotPassword";
 import Profile from './components/Profile';
+import SuccessRegister from './components/SuccessRegister';
 
 const AppRoutes = [
   {
@@ -31,7 +32,7 @@ const AppRoutes = [
     element: <Profile/>
   },{
     path: '/success-register',
-    element: <Profile/>
+    element: <SuccessRegister/>
   }
 ];
 

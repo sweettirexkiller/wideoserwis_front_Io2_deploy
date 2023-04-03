@@ -13,7 +13,7 @@ const Profile = () => {
   return (
     <div>
       <p>
-        <strong>Token:</strong> {currentUser.substring(0, 20)} ...{" "}
+        <strong>Token:</strong> {currentUser.token.substring(0, 20)} ...{" "}
       </p>
     </div>
   );
