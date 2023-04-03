@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./slices/auth";
 
 import EventBus from "./common/EventBus";
+import PageNotFound from './components/PageNotFound';
 
 const App = () => {
 
@@ -35,6 +36,8 @@ const App = () => {
             const { element, ...rest } = route;
             return <Route key={index} {...rest} element={element} />;
           })}
+
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>
     );

@@ -83,7 +83,7 @@ const Register = () => {
 
   return (
     <div>
-    <Center>
+    <Center paddingY={10}>
       <Flex>
         <Formik
           initialValues={initialValues}

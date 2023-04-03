@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import ForgotPassword from "./components/ForgotPassword";
 import Profile from './components/Profile';
 import SuccessRegister from './components/SuccessRegister';
+import Videos from './components/Videos/Videos';
 
 const AppRoutes = [
   {
@@ -13,7 +14,7 @@ const AppRoutes = [
   },
   {
     path: '/videos',
-    element: "Videos will be here."
+    element: <Videos/>
   },
   {
     path: '/log-in',

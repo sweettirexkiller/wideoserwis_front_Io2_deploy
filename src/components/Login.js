@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { clearMessage } from '../slices/messege';
 import { login } from '../slices/auth';
+import Profile from './Profile';
 
 export default function Login() {
 
@@ -56,66 +57,72 @@ export default function Login() {
   if (isLoggedIn) {
     return <Navigate to="/profile" />;
   }
-  return(
-        <Center>
-            <Flex>
-            <Formik
-                initialValues={{ email: '', password: '' }}
-                validationSchema={FormSchema}
-                onSubmit={handleLogin}
-        >
-            {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-                  /* and other goodies */
-              }) => (
-                <Form onSubmit={handleSubmit}>
-                    <VStack justifyContent={"space-evenly"} w={'100%'} h={'100%'}>
-                        <Center><Text>Log In</Text></Center>
-                        <FormControl isRequired isInvalid={(errors.email && touched.email)}>
-                            <FormLabel>Email</FormLabel>
-                            <Input
-                                   type="text"
-                                   name="email"
-                                   onChange={handleChange}
-                                   onBlur={handleBlur}
-                                   value={values.email}/>
-                            {errors.email && touched.email && <FormErrorMessage>Invalid email address.</FormErrorMessage>}
-                        </FormControl>
-                        <FormControl isRequired isInvalid={(errors.password && touched.password)}>
-                            <FormLabel>Password</FormLabel>
-                            <Input
-                                   type="password"
-                                   name="password"
-                                   onChange={handleChange}
-                                   onBlur={handleBlur}
-                                   value={values.password}/>
-                            {errors.password && touched.password && <FormErrorMessage>Required.</FormErrorMessage>}
-                        </FormControl>
-                        <HStack w={'100%'} justifyContent={"space-evenly"}>
-                            <Button onClick={(e)=>{handleSubmit()}} variant="solid" colorScheme='teal'>
-                              {loading && (
-                               <Spinner/>
-                              )}
-                                Log in
-                            </Button>
-                        </HStack>
-                    </VStack>
-                </Form>
-                )}
-                </Formik>
-            </Flex>
-          {message && (
-            <div className="form-group">
-              <div className="alert alert-danger" role="alert">
-                {message}
-              </div>
-            </div>
-          )}
-        </Center>);
+
+  return (
+    <Center>
+      <Profile/>
+    </Center>
+  );
+  // return(
+  //       <Center>
+  //           <Flex>
+  //           <Formik
+  //               initialValues={{ email: '', password: '' }}
+  //               validationSchema={FormSchema}
+  //               onSubmit={handleLogin}
+  //       >
+  //           {({
+  //                 values,
+  //                 errors,
+  //                 touched,
+  //                 handleChange,
+  //                 handleBlur,
+  //                 handleSubmit,
+  //                 isSubmitting,
+  //                 /* and other goodies */
+  //             }) => (
+  //               <Form onSubmit={handleSubmit}>
+  //                   <VStack justifyContent={"space-evenly"} w={'100%'} h={'100%'}>
+  //                       <Center><Text>Log In</Text></Center>
+  //                       <FormControl isRequired isInvalid={(errors.email && touched.email)}>
+  //                           <FormLabel>Email</FormLabel>
+  //                           <Input
+  //                                  type="text"
+  //                                  name="email"
+  //                                  onChange={handleChange}
+  //                                  onBlur={handleBlur}
+  //                                  value={values.email}/>
+  //                           {errors.email && touched.email && <FormErrorMessage>Invalid email address.</FormErrorMessage>}
+  //                       </FormControl>
+  //                       <FormControl isRequired isInvalid={(errors.password && touched.password)}>
+  //                           <FormLabel>Password</FormLabel>
+  //                           <Input
+  //                                  type="password"
+  //                                  name="password"
+  //                                  onChange={handleChange}
+  //                                  onBlur={handleBlur}
+  //                                  value={values.password}/>
+  //                           {errors.password && touched.password && <FormErrorMessage>Required.</FormErrorMessage>}
+  //                       </FormControl>
+  //                       <HStack w={'100%'} justifyContent={"space-evenly"}>
+  //                           <Button onClick={(e)=>{handleSubmit()}} variant="solid" colorScheme='teal'>
+  //                             {loading && (
+  //                              <Spinner/>
+  //                             )}
+  //                               Log in
+  //                           </Button>
+  //                       </HStack>
+  //                   </VStack>
+  //               </Form>
+  //               )}
+  //               </Formik>
+  //           </Flex>
+  //         {message && (
+  //           <div className="form-group">
+  //             <div className="alert alert-danger" role="alert">
+  //               {message}
+  //             </div>
+  //           </div>
+  //         )}
+  //       </Center>);
 }

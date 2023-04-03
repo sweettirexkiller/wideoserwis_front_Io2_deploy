@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {Center, Heading, Text, VStack, Box} from "@chakra-ui/react";
-import {Button, Container} from "reactstrap";
+import { Center, Heading, Text, VStack, Box, Input, HStack, Button } from '@chakra-ui/react';
 import {Link} from "react-router-dom";
 
 
@@ -10,27 +9,27 @@ export class Home extends Component {
   render() {
     return (
         <Box bg="gray.50">
-          <Container maxW="container.lg">
+
             <Center p={4} minHeight="70vh">
               <VStack>
-                <Container maxW="container.md" textAlign="center">
+
                   <Heading size="2xl" mb={4} color="gray.700">
-                    Our videos are really cool.
+                    Co chcesz obejrzeć ?
                   </Heading>
+                  <HStack>
 
-                  <Text fontSize="xl" color="gray.500">
-                   Best propaganda since Stalin.
-                  </Text>
-
+                    <Input
+                    type={'text'}/>
                     <Link   to="/videos">
-                        <Button mt={8} colorScheme="brand" >
-                            Search videos →
+                        <Button colorScheme='blue' >
+                            Wyszukaj
                         </Button>
                     </Link>
-                </Container>
+                  </HStack>
+
               </VStack>
             </Center>
-          </Container>
+
         </Box>
     );
   }
