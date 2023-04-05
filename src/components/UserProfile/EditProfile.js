@@ -251,7 +251,7 @@ const AlertDeleteAccount = ({isOpen, cancelRef, onClose, id}) => {
 
     deleteUser(id)
       .then(() =>{
-        dispatch(logout());
+        // dispatch(logout());
         navigate('/success-deleting');
       })
       .catch(()=>{onClose();});
