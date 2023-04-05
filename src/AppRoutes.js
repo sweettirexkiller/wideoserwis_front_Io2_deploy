@@ -6,6 +6,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import Profile from './components/Profile';
 import SuccessRegister from './components/SuccessRegister';
 import Videos from './components/Videos/Videos';
+import SuccessDeleting from './components/UserProfile/SuccessDeleting';
 
 const AppRoutes = [
   {
@@ -34,6 +35,9 @@ const AppRoutes = [
   },{
     path: '/success-register',
     element: <SuccessRegister/>
+  },{
+    path: '/success-deleting',
+    element: <SuccessDeleting/>
   }
 ];
 

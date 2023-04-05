@@ -3,7 +3,7 @@ import { setMessage } from "./messege";
 
 import AuthService from "../services/auth.service";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const token = JSON.parse(localStorage.getItem("token"));
 
 export const register = createAsyncThunk(
   "auth/register",
@@ -30,16 +30,9 @@ export const login = createAsyncThunk(
   async ({ email, password }, thunkAPI) => {
     try {
       const data = await AuthService.login(email, password);
-      console.log(data);
-      return { user: data };
+      return { token: data };
     } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      thunkAPI.dispatch(setMessage(message));
+      thunkAPI.dispatch(setMessage(error.response.data));
       return thunkAPI.rejectWithValue();
     }
   }
@@ -49,9 +42,9 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   await AuthService.logout();
 });
 
-const initialState = user
-  ? { isLoggedIn: true, user }
-  : { isLoggedIn: false, user: null };
+const initialState = token
+  ? { isLoggedIn: true, token }
+  : { isLoggedIn: false, token: null };
 
 const authSlice = createSlice({
   name: "auth",
@@ -64,16 +57,18 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
     },
     [login.fulfilled]: (state, action) => {
+
       state.isLoggedIn = true;
-      state.user = action.payload.user;
+      state.token = action.payload.token;
+
     },
     [login.rejected]: (state, action) => {
       state.isLoggedIn = false;
-      state.user = null;
+      state.token = null;
     },
     [logout.fulfilled]: (state, action) => {
       state.isLoggedIn = false;
-      state.user = null;
+      state.token = null;
     },
   },
 });

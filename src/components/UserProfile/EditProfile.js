@@ -5,22 +5,60 @@ import {
   AvatarBadge,
   Button,
   Center, Flex,
-  FormControl,
+  FormControl, FormErrorMessage,
   FormLabel,
   Heading,
-  IconButton, Input,
-  Stack, useDisclosure,
+  IconButton, Input, Select,
+  Stack, useDisclosure, VStack,
 } from '@chakra-ui/react';
 import { SmallCloseIcon } from '@chakra-ui/icons';
+import { useGetUserByIdQuery, useDeleteUserMutation } from '../../services/authAPI';
+import { useDispatch, useSelector } from 'react-redux';
+import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../slices/auth';
 
 const EditProfile = ({setIsEdit}) => {
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { token } = useSelector((state) => state.auth);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {data, error, isLoading} = useGetUserByIdQuery(token);
   const cancelRef = React.useRef();
   const handleClick = (e) => {
     e.preventDefault();
     setIsEdit(false);
   }
+
+  const initialValues = {
+    nickName: data ? data.nickName : null,
+    email: data ? data.email : null,
+    firstname:data ? data.name : null,
+    surname: data ? data.surname : null,
+    userType: data ? data.userType : null
+  };
+
+  const validationSchema = Yup.object().shape({
+    nickName: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    firstname: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    surname: Yup.string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
+  });
+
+
+  const handleUpdate = (formValue) => {
+    const { nickName: nickname, firstname: name, surname: lastname, userType, email } = formValue;
+
+    console.log("Perform UPDATE query!");
+  };
 
   return (
     <>
@@ -63,77 +101,161 @@ const EditProfile = ({setIsEdit}) => {
             </Center>
           </Stack>
         </FormControl>
-        <FormControl id="userName" isRequired>
-          <FormLabel>User name</FormLabel>
-          <Input
-            placeholder="UserName"
-            _placeholder={{ color: 'gray.500' }}
-            type="text"
-          />
-        </FormControl>
-        <FormControl id="email" isRequired>
-          <FormLabel>Email address</FormLabel>
-          <Input
-            placeholder="your-email@example.com"
-            _placeholder={{ color: 'gray.500' }}
-            type="email"
-          />
-        </FormControl>
-        <FormControl id="password" isRequired>
-          <FormLabel>Password</FormLabel>
-          <Input
-            placeholder="password"
-            _placeholder={{ color: 'gray.500' }}
-            type="password"
-          />
-        </FormControl>
-        <Stack spacing={6} direction={['column', 'row']}>
-          <Button
-            bg={'red.400'}
-            color={'white'}
-            w="full"
-            _hover={{
-              bg: 'red.500',
-            }}
-            onClick={handleClick}
-          >
-            Cancel
-          </Button>
-          <Button
-            bg={'blue.400'}
-            color={'white'}
-            w="full"
-            _hover={{
-              bg: 'blue.500',
-            }}>
-            Submit
-          </Button>
-        </Stack>
-        <Stack spacing={6} direction={['column', 'row']}>
-          <Button
-            bg={'gray.400'}
-            color={'gray.900'}
-            w="full"
-            _hover={{
-              bg: 'gray.500',
-            }}
-            onClick={onOpen}
-          >
-            Delete Account
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(true);
+            handleUpdate(values);
+          }}
+        >
+          {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+              /* and other goodies */
+            }) => (
+            <Form onSubmit={handleSubmit}>
+              <VStack justifyContent={"space-evenly"} w={'100%'} h={'100%'}>
+                <FormControl isRequired
+                             isInvalid={(errors.nickName && touched.nickName)}
+                >
+                  <FormLabel>Nick name</FormLabel>
+                  <Input placeholder='First name'
+                         type="text"
+                         name="nickName"
+                         onChange={handleChange}
+                         onBlur={handleBlur}
+                         value={values.nickName}
+                  />
+                  {errors.nickName && touched.nickName && <FormErrorMessage>Nick name is required.</FormErrorMessage>}
+                </FormControl>
+                <FormControl isRequired
+                             isInvalid={(errors.firstname && touched.firstname)}
+                >
+                  <FormLabel>First name</FormLabel>
+                  <Input placeholder='First name'
+                         type="text"
+                         name="firstname"
+                         onChange={handleChange}
+                         onBlur={handleBlur}
+                         value={values.firstname}
+                  />
+                  {errors.firstname && touched.firstname && <FormErrorMessage>First Name is required.</FormErrorMessage>}
+                </FormControl>
+                <FormControl isRequired
+                             isInvalid={(errors.surname && touched.surname)}
+                >
+                  <FormLabel>Surname</FormLabel>
+                  <Input placeholder='Last name'
+                         type="text"
+                         name="surname"
+                         onChange={handleChange}
+                         onBlur={handleBlur}
+                         value={values.surname}
+                  />
+                  {errors.surname && touched.surname && <FormErrorMessage>Last Name is required.</FormErrorMessage>}
+                </FormControl>
+                <FormControl isRequired
+                             isInvalid={(errors.userType && touched.userType)}
+                >
+                  <FormLabel>User Type</FormLabel>
+                  <Select placeholder='User type'
+                          name="userType"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.userType === 0 ? "viewer" : "creator" }>
+                    <option value='creator'>Creator</option>
+                    <option value='viewer'>Viewer</option>
+                  </Select>
 
-          </Button>
-        </Stack>
+                  {errors.userType && touched.userType && <FormErrorMessage>User type is required.</FormErrorMessage>}
+                </FormControl>
+                <FormControl isRequired
+                             isInvalid={(errors.email && touched.email)}
+                >
+                  <FormLabel>E-mail</FormLabel>
+                  <Input  type="email"
+                          name="email"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.email}
+                          placeholder='E-mail'/>
+                  {errors.email && touched.email && <FormErrorMessage>Invalid email address</FormErrorMessage>}
+                </FormControl>
+
+                <Stack spacing={6} direction={['column', 'row']}>
+                  <Button
+                    bg={'red.400'}
+                    color={'white'}
+                    w="full"
+                    _hover={{
+                      bg: 'red.500',
+                    }}
+                    onClick={handleClick}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    bg={'blue.400'}
+                    color={'white'}
+                    w="full"
+                    onClick={(e)=>{handleSubmit()}}
+                    _hover={{
+                      bg: 'blue.500',
+                    }}>
+                    Submit
+                  </Button>
+                </Stack>
+                <Stack spacing={6} direction={['column', 'row']}>
+                  <Button
+                    bg={'gray.400'}
+                    color={'gray.900'}
+                    w="full"
+                    _hover={{
+                      bg: 'gray.500',
+                    }}
+                    onClick={onOpen}
+                  >
+                    Delete Account
+
+                  </Button>
+                </Stack>
+              </VStack>
+            </Form>
+          )}
+        </Formik>
+
+
+
       </Stack>
     </Flex>
 
 
-      <AlertDeleteAccount isOpen={isOpen} cancelRef={cancelRef} onClose={onClose}/>
+      <AlertDeleteAccount isOpen={isOpen} cancelRef={cancelRef} onClose={onClose} id={data.id}/>
     </>
   );
 };
 
 
-const AlertDeleteAccount = ({isOpen, cancelRef, onClose}) => {
+const AlertDeleteAccount = ({isOpen, cancelRef, onClose, id}) => {
+  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleDeleteAccountClick=(e)=>{
+    e.preventDefault();
+
+    deleteUser(id)
+      .then(() =>{
+        dispatch(logout());
+        navigate('/success-deleting');
+      })
+      .catch(()=>{onClose();});
+  }
   return (
     <>
       <AlertDialog
@@ -155,7 +277,7 @@ const AlertDeleteAccount = ({isOpen, cancelRef, onClose}) => {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme='red' onClick={onClose} ml={3}>
+              <Button colorScheme='red' ml={3} onClick={handleDeleteAccountClick}>
                 Delete
               </Button>
             </AlertDialogFooter>

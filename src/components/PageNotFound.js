@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const PageNotFound = () =>{
   const navigate = useNavigate();
   return (
-    <Box textAlign="center" py={50} px={6} hy={'500px'}>
+    <Box textAlign="center" py={50} px={6} h='calc(90vh)'>
       <Heading
         display="inline-block"
         as="h2"

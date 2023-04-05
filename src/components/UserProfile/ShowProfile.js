@@ -1,18 +1,71 @@
 import React from 'react';
 import {
+  Alert,
+  AlertIcon, AlertTitle,
   Avatar,
-  AvatarBadge, Box, Button,
+  AvatarBadge, Button,
   Center,
   Flex,
-  Heading, ListItem,
+  Heading, ListItem, Spinner,
   Stack, UnorderedList,
 } from '@chakra-ui/react';
+import {useGetUserByIdQuery} from '../../services/authAPI';
+import { useSelector } from 'react-redux';
+
+const UserInfo = ({user, handleClick}) => {
+  return (
+      <>
+        <Center>
+            <Stack direction={['column', 'row']} spacing={6}>
+              <Center>
+                <Avatar size="xl" src="https://bit.ly/sage-adebayo">
+                  <AvatarBadge
+                    size="sm"
+                    rounded="full"
+                    top="-10px"
+                    colorScheme="red"
+                    aria-label="remove Image"
+                  />
+                </Avatar>
+              </Center>
+            </Stack>
+          </Center>
+        <Center>
+          <UnorderedList>
+            <ListItem><b>Nickname:</b>{user.nickName}</ListItem>
+            <ListItem><b>Name:</b>{user.name}</ListItem>
+            <ListItem><b>Surname:</b>{user.surname}</ListItem>
+            <ListItem><b>Email:</b>{user.email}</ListItem>
+            <ListItem><b>User Type:</b>{user.type === 0 ? "Viewer" :"Creator"}</ListItem>
+          </UnorderedList>
+        </Center>
+        <Stack spacing={6} direction={['column', 'row']}>
+          <Button
+            bg={'blue.400'}
+            color={'white'}
+            w="full"
+            _hover={{
+              bg: 'blue.500',
+            }}
+            onClick={handleClick}
+          >
+            Edit
+          </Button>
+        </Stack>
+
+      </>
+
+  );
+};
 
 const ShowProfile = ({setIsEdit}) => {
+  const { token } = useSelector((state) => state.auth);
+  const {data, error, isLoading} = useGetUserByIdQuery(token);
   const handleClick = (e) => {
     e.preventDefault();
     setIsEdit(true);
   }
+
   return (
     <Flex
       minH={'100vh'}
@@ -34,43 +87,15 @@ const ShowProfile = ({setIsEdit}) => {
             Your Profile
           </Heading>
         </Center>
-        <Center>
-          <Stack direction={['column', 'row']} spacing={6}>
-            <Center>
-              <Avatar size="xl" src="https://bit.ly/sage-adebayo">
-                <AvatarBadge
-                  size="sm"
-                  rounded="full"
-                  top="-10px"
-                  colorScheme="red"
-                  aria-label="remove Image"
-                />
-              </Avatar>
-            </Center>
-          </Stack>
-        </Center>
-        <Center>
-          <UnorderedList>
-            <ListItem><b>Nickname:</b> Lorem ipsum dolor sit amet</ListItem>
-            <ListItem><b>Name:</b>Consectetur adipiscing elit</ListItem>
-            <ListItem><b>Surname:</b>Integer molestie lorem at massa</ListItem>
-            <ListItem><b>Email:</b>Facilisis in pretium nisl aliquet</ListItem>
-            <ListItem><b>User Type:</b>Viewer</ListItem>
-          </UnorderedList>
-        </Center>
-        <Stack spacing={6} direction={['column', 'row']}>
-          <Button
-            bg={'blue.400'}
-            color={'white'}
-            w="full"
-            _hover={{
-              bg: 'blue.500',
-            }}
-            onClick={handleClick}
-          >
-            Edit
-          </Button>
-        </Stack>
+
+        {isLoading ?
+          <Spinner/> :
+          (!error ? <UserInfo user={data} handleClick={handleClick}/> :
+              <Alert status='error'>
+                <AlertIcon />
+                <AlertTitle>Error Fetching Data!</AlertTitle>
+              </Alert>
+          )}
       </Stack>
     </Flex>
   );

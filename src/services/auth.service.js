@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const API_URL = "https://videoserviceapi.azurewebsites.net";
+export const API_URL = "https://videoserviceapi.azurewebsites.net";
 
-const register = ( nickname, name, lastname,userType,email, password) => {
+const register = ( nickname, firstname, lastname,userType,email, password) => {
   return axios.post(API_URL + "/api/register", {
     nickname,
-    name,
-    lastname,
+    name : firstname,
+    Surname: lastname,
     userType,
     email,
     password,
@@ -21,18 +21,18 @@ const login = (email, password) => {
       password,
     })
     .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+      if (response.data.token) {
+        localStorage.setItem("token", JSON.stringify(response.data));
       }
-
-      // console.log(response.data.accessToken);
-
       return response.data;
+    })
+    .catch(err => {
+      return Promise.reject(err);
     });
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("token");
 };
 
 const authService = {

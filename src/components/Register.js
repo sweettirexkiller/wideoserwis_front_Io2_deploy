@@ -16,6 +16,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { icons } from 'react-icons';
 
 
 const Register = () => {
@@ -66,11 +67,12 @@ const Register = () => {
   });
 
   const handleRegister = (formValue) => {
-    const { nickName: nickname, firstname: name, surname: lastname, userType, email, password } = formValue;
-
+    const { nickName: nickname, firstname, surname: lastname, userType, email, password } = formValue;
+    console.log(formValue);
+    const type = 0;
     setSuccessful(false);
 
-    dispatch(register({ nickname, name, lastname,userType, email, password }))
+    dispatch(register({ nickname, firstname, lastname,userType: type, email, password }))
       .unwrap()
       .then(() => {
         setSuccessful(true);
