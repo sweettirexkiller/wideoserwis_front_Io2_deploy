@@ -1,0 +1,41 @@
+rejestracja (widz) - logowanie - obejrzenie filmu
+
+1. Użytkownik otwiera stronę w przeglądarce
+2. Użytkownik wchodzi na stronę logowania, wpisując e-mail i hasło
+3. Konto użytkownika nie istnieje, więc pojawia się stosowny błąd
+4. Użytkownik przechodzi do strony rejestracji
+5. Użytkownik wprowadza dane w formularzu:
+  adres e-mail: abdc123
+  pseudonim: <brak>
+  imię: Krzysztof
+  nazwisko: Kowalski
+  hasło: kicia345
+  widz/twórca: widz
+6. Użytkownik zatwierdza formularz rejestracji
+7. Użytkownik otrzymuje komunikat o błądach w formularzu:
+  - niepoprawny adres e-mail
+  - brak pseudonimu
+8. Użytkownik wprowadza poprawione dane:
+  adres e-mail: krzyskowal@pw.edu.pl
+  pseudonim: krzyskowal
+9. Użytkownik zatwierdza formularz rejestracji
+10. Użytkownik zostaje zarejestrowany i przekierowany do strony logowania
+11. Użytkownik loguje się na nowo założone konto wpisując niepoprawne hasło
+12. Użytkownik dostaje informację o niepoprawnym haśle
+13. Użytkownik wpisuje poprawne hasło i zatwierdza formularz logowania
+14. Użytkownik zostaje pomyślnie zalogowany i przekierowany do strony głównej serwisu
+15. Uzytkownik wpisuje w formularz wyszukiwania swoje kryterium wyszukiwania (string)
+16. Uzytkownik zostaje przekierowany do strony wyników wyszukiwania (lista wynikow)
+17a. uzytkownik klika na jeden z wynikow  i zostaje przekierowany do strony filmu
+17b. uzytownik klika przicisk i filmik zostaje dodany do playlisty "Obejrzyj Później"
+18a. Strona odtwarza film po załadowaniu
+18b. Strona Filmiku wyświetla tytul, opis, komentarze oraz liczbę pozytywnych i negatywnych reakcji.
+19. użytkownik zatrzymuje film po kliknięciu na odtwarzarkę
+20. Użytkownik przewija film przy pomocy strzałek na klawiaturze
+21. użytkownik zmienia głośność filmu dzięki kliknięciu w przeglądarce lub na klawiaturze
+22. uzytkownik komentuje film
+23. uzytkownik lubi film
+24. uzytkownik przewija film po kliknieciu na pasek dlugosci filmu
+25. uzytkownik zmienia jakosc jakosc filmu dzieki wyborowi rozdzielczosci
+26. odtwarzarka filmów wyswietla napisy do filmu na życzenie użytkownika (po kliknięciu)
+27. odtwarzarka po odtworzeniu filmu w całości odznacza film jako obejrzany przez użytkownika
