@@ -24,18 +24,11 @@ rejestracja (widz) - logowanie - obejrzenie filmu
 12. Użytkownik dostaje informację o niepoprawnym haśle
 13. Użytkownik wpisuje poprawne hasło i zatwierdza formularz logowania
 14. Użytkownik zostaje pomyślnie zalogowany i przekierowany do strony głównej serwisu
-15. Uzytkownik wpisuje w formularz wyszukiwania swoje kryterium wyszukiwania (string)
-16. Uzytkownik zostaje przekierowany do strony wyników wyszukiwania (lista wynikow)
-17a. uzytkownik klika na jeden z wynikow  i zostaje przekierowany do strony filmu
-17b. uzytownik klika przicisk i filmik zostaje dodany do playlisty "Obejrzyj Później"
-18a. Strona odtwarza film po załadowaniu
-18b. Strona Filmiku wyświetla tytul, opis, komentarze oraz liczbę pozytywnych i negatywnych reakcji.
-19. użytkownik zatrzymuje film po kliknięciu na odtwarzarkę
-20. Użytkownik przewija film przy pomocy strzałek na klawiaturze
-21. użytkownik zmienia głośność filmu dzięki kliknięciu w przeglądarce lub na klawiaturze
-22. uzytkownik komentuje film
-23. uzytkownik lubi film
-24. uzytkownik przewija film po kliknieciu na pasek dlugosci filmu
-25. uzytkownik zmienia jakosc jakosc filmu dzieki wyborowi rozdzielczosci
-26. odtwarzarka filmów wyswietla napisy do filmu na życzenie użytkownika (po kliknięciu)
-27. odtwarzarka po odtworzeniu filmu w całości odznacza film jako obejrzany przez użytkownika
+15. Użytkownik wpisuje w formularz wyszukiwania kryterium wyszukiwania "Test Video 123"
+16. Użytkownik zostaje przekierowany do strony wyników wyszukiwania (lista wyników)
+17. Użytkownik klika na pierwszy z wyników  i zostaje przekierowany do strony filmu "Test Video 123"
+18. Po przejściu na stronę wybranego filmu strona odtwarza film po załadowaniu, zmiana stanu na "Odtwarzany"
+18. Strona filmu "Test Video 123" wyświetla tytuł, opis, komentarze (lub ich brak) oraz liczbę pozytywnych i negatywnych reakcji.
+19. Użytkownik zatrzymuje film po kliknięciu na odtwarzarkę, zmiana stanu na "Zapauzowany". Ponowne kliknięcie kontynuuje odtwarzanie filmu, zmiana stanu na "Odtwarzany".
+25. Odtwarzarka po odtworzeniu filmu w całości odznacza film jako obejrzany przez zalogowanego użytkownika (zmiana stanu na Obejrzany)
+26. W stanie filmu jako obejrzany wyświetla się element "Obejrzyć od nowa".

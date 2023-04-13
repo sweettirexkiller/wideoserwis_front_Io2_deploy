@@ -24,10 +24,17 @@ export const authAPI = createApi({
         query: (id) => `/api/user`,
       }),
       updateUser: builder.mutation({
-        query: ({ id }) => ({
-          url: `/api/user/${id}`,
-          method: 'PATCH',
-          body: { data:"Asdasd" },
+        query: ({ id, nickname, name, surname, userType, avatarImage }) => ({
+          url: `/api/user/`,
+          method: 'PUT',
+          params: { id },
+          body: {
+            "nickname": nickname,
+            "name": name,
+            "surname": surname,
+            "userType": userType,
+            "avatarImage": avatarImage
+          }
         }),
       }),
 
@@ -46,4 +53,4 @@ export const authAPI = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetUserByIdQuery, useDeleteUserMutation } = authAPI;
+export const { useGetUserByIdQuery, useDeleteUserMutation, useUpdateUserMutation } = authAPI;

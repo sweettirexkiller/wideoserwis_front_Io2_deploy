@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
-import EditProfile from './UserProfile/EditProfile';
+import EditProfile from './UserProfile/EditProfile/EditProfile';
 import ShowProfile from './UserProfile/ShowProfile';
 
 const Profile = () => {

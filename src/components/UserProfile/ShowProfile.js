@@ -18,7 +18,7 @@ const UserInfo = ({user, handleClick}) => {
         <Center>
             <Stack direction={['column', 'row']} spacing={6}>
               <Center>
-                <Avatar size="xl" src="https://bit.ly/sage-adebayo">
+                <Avatar size="xl" src={user.avatarImage}>
                   <AvatarBadge
                     size="sm"
                     rounded="full"
