@@ -19,7 +19,7 @@ export class Home extends Component {
                   <HStack>
 
                     <Input
-                    type={'text'}/>
+                    type={'text'} variant='outline' backgroundColor={'white'}/>
                     <Link   to="/videos">
                         <Button colorScheme='blue' >
                             Wyszukaj
