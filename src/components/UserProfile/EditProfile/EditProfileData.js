@@ -15,6 +15,7 @@ import {
 import * as Yup from 'yup';
 import FilePicker from 'chakra-ui-file-picker';
 import {  useUpdateUserMutation } from '../../../services/authAPI';
+import { convertToBase64 } from '../../../common/utils';
 
 const EditProfileData = ({setIsEdit, onDeleteAccountDialog, data})=> {
 
@@ -63,28 +64,7 @@ const EditProfileData = ({setIsEdit, onDeleteAccountDialog, data})=> {
       .catch(()=>{});
   };
 
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        // console.log(fileReader.result);
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        // console.log('Error: ', error);
-        reject(error);
-      };
-    });
-  };
-
-  const handleIconRemove = (e, setFieldValue) => {
-    setFieldValue('avatarImage', null);
-    setCurrentAvatarImage(null);
-  }
-
   const handleIcon = async (e, setFieldValue) => {
-
     const file = e[0];
     //check the size of image
     if (file?.size/1024/1024 < 2) {
@@ -131,24 +111,6 @@ const EditProfileData = ({setIsEdit, onDeleteAccountDialog, data})=> {
             <Stack direction={['column', 'row']} spacing={6}>
               <Center>
                 <Avatar size="xl" src={`${currentAvatarImage}`}>
-                  {/*<Field name='avatarImage'>*/}
-                  {/*  {({ form, field }) => {*/}
-                  {/*    const { setFieldValue } = form*/}
-                  {/*    return (*/}
-
-                  {/*      <AvatarBadge*/}
-                  {/*        as={IconButton}*/}
-                  {/*        size="sm"*/}
-                  {/*        rounded="full"*/}
-                  {/*        top="-10px"*/}
-                  {/*        colorScheme="red"*/}
-                  {/*        aria-label="remove Image"*/}
-                  {/*        icon={<SmallCloseIcon onClick={(e) => handleIconRemove(e, setFieldValue)}/>}*/}
-                  {/*      />*/}
-                  {/*    )*/}
-                  {/*  }}*/}
-                  {/*</Field>*/}
-
                 </Avatar>
               </Center>
               <Center w="full">

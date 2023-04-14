@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from 'formik';
 import * as Yup from "yup";
-import { clearMessage } from '../slices/messege';
-import { register } from '../slices/auth';
+import { clearMessage } from '../../slices/messege';
+import { register } from '../../slices/auth';
 import {
+  Avatar,
   Button,
   Center,
   Flex,
@@ -12,19 +13,21 @@ import {
   FormErrorMessage,
   FormLabel,
   HStack,
-  Input, Select,
+  Input, Select, Stack, useToast,
   VStack,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { icons } from 'react-icons';
+import FilePicker from 'chakra-ui-file-picker';
+import { convertToBase64 } from '../../common/utils';
 
 
 const Register = () => {
   const [successful, setSuccessful] = useState(false);
-
+  const [currentAvatarImage, setCurrentAvatarImage] = useState(null);
   const { message } = useSelector((state) => state.message);
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  const toast = useToast();
 
   useEffect(() => {
     dispatch(clearMessage());
@@ -37,7 +40,8 @@ const Register = () => {
     surname: "",
     userType: "",
     password: "",
-    confirm: ""
+    confirm: "",
+    avatarImage: null
   };
 
   const validationSchema = Yup.object().shape({
@@ -67,12 +71,12 @@ const Register = () => {
   });
 
   const handleRegister = (formValue) => {
-    const { nickName: nickname, firstname, surname: lastname, userType, email, password } = formValue;
-    console.log(formValue);
+    const { nickName: nickname, firstname, surname: lastname, userType, email, password, avatarImage } = formValue;
+
     const type = 0;
     setSuccessful(false);
 
-    dispatch(register({ nickname, firstname, lastname,userType: type, email, password }))
+    dispatch(register({ nickname, firstname, lastname,userType: type, email, password, avatarImage }))
       .unwrap()
       .then(() => {
         setSuccessful(true);
@@ -81,6 +85,27 @@ const Register = () => {
       .catch(() => {
         setSuccessful(false);
       });
+  };
+
+  const handleIcon = async (e, setFieldValue) => {
+    const file = e[0];
+    //check the size of image
+    if (file?.size/1024/1024 < 2) {
+      const base64 = await convertToBase64(file);
+      setFieldValue('avatarImage', `${base64}`);
+      setCurrentAvatarImage(base64);
+    }
+    else {
+      setCurrentAvatarImage(null);
+      setFieldValue('avatarImage', null);
+      toast({
+        title: 'Error',
+        description: "Avatar image isn't necessary but recommended. Image size must be of 2MB or less. Accepted img, jpeg format only.",
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -107,6 +132,33 @@ const Register = () => {
             }) => (
             <Form onSubmit={handleSubmit}>
               <VStack justifyContent={"space-evenly"} w={'100%'} h={'100%'}>
+                <FormControl id="userName">
+                  <FormLabel>User Icon</FormLabel>
+                  <Stack direction={['column', 'row']} spacing={6}>
+                    <Center>
+                      <Avatar size="xl" src={`${currentAvatarImage}`}>
+                      </Avatar>
+                    </Center>
+                    <Center w="full">
+                      <Field name='avatarImage'>
+                        {({ form, field }) => {
+                          const { setFieldValue } = form
+                          return (
+                            <FilePicker
+                              onFileChange={(e) => handleIcon(e, setFieldValue)}
+                              placeholder="Choose Avatar Image File"
+                              clearButtonLabel="Clear"
+                              multipleFiles={false}
+                              accept="image/png, image/jpeg"
+                              hideClearButton={false}
+                              required={false}
+                            />
+                          )
+                        }}
+                      </Field>
+                    </Center>
+                  </Stack>
+                </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.nickName && touched.nickName)}
                 >

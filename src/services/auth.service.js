@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const API_URL = "https://videoserviceapi.azurewebsites.net";
 
-const register = ( nickname, firstname, lastname,userType,email, password) => {
+const register = ( nickname, firstname, lastname,userType,email, password, avatarImage) => {
   return axios.post(API_URL + "/api/register", {
     nickname,
     name : firstname,
@@ -10,7 +10,7 @@ const register = ( nickname, firstname, lastname,userType,email, password) => {
     userType,
     email,
     password,
-    avatarImage: "twojamordka.png"
+    avatarImage
   });
 };
 
