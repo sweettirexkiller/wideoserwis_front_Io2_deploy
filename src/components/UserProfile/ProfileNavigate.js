@@ -16,7 +16,6 @@ const ProfileNavigate = () => {
     return <Navigate to="/log-in" />;
   }
 
-
   return (
     <VStack
       direction={'row'}

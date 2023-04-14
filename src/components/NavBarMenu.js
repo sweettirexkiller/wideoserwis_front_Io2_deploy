@@ -43,7 +43,7 @@ export default function WithSubnavigation() {
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}>
-            <Link to={"/"}>Filmiki.pl</Link>
+            <Link to={"/"}><Text as={'b'}>Wideoserwis.com</Text></Link>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
