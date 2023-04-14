@@ -30,7 +30,6 @@
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "react-tiny-popover": "^7.2.4",
-    "reactstrap": "^9.1.8",
     "toast": "^0.5.4",
     "web-vitals": "^2.1.4",
     "yup": "^1.0.2"

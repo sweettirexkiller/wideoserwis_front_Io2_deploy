@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Center, Heading, Text, VStack, Box, Input, HStack, Button } from '@chakra-ui/react';
+import { Center, Heading, VStack, Box, Input, HStack, Button } from '@chakra-ui/react';
 import {Link} from "react-router-dom";
 
 

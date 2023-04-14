@@ -17,7 +17,7 @@ import FilePicker from 'chakra-ui-file-picker';
 import {  useUpdateUserMutation } from '../../../services/authAPI';
 import { convertToBase64 } from '../../../common/utils';
 
-const EditProfileData = ({setIsEdit, onDeleteAccountDialog, data})=> {
+const EditProfileData = ({ onDeleteAccountDialog, data})=> {
 
   const toast = useToast()
   const [currentAvatarImage, setCurrentAvatarImage] = useState(data.avatarImage);
@@ -25,7 +25,6 @@ const EditProfileData = ({setIsEdit, onDeleteAccountDialog, data})=> {
 
   const handleClick = (e) => {
     e.preventDefault();
-    setIsEdit(false);
   }
   const initialValues = {
     nickName: data ? data.nickName : null,
@@ -59,7 +58,7 @@ const EditProfileData = ({setIsEdit, onDeleteAccountDialog, data})=> {
       nickname, name, surname, avatarImage, userType: data.userType, id
     })
       .then(() =>{
-        setIsEdit(false);
+
       })
       .catch(()=>{});
   };

@@ -3,10 +3,10 @@ import { Home } from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register/Register";
 import ForgotPassword from "./components/ForgotPassword";
-import Profile from './components/Profile';
 import SuccessRegister from './components/SuccessRegister';
 import Videos from './components/Videos/Videos';
 import SuccessDeleting from './components/UserProfile/SuccessDeleting';
+import ProfileNavigate from './components/UserProfile/ProfileNavigate';
 
 const AppRoutes = [
   {
@@ -31,7 +31,7 @@ const AppRoutes = [
   },
   {
     path: '/profile',
-    element: <Profile/>
+    element: <ProfileNavigate/>
   },{
     path: '/success-register',
     element: <SuccessRegister/>
