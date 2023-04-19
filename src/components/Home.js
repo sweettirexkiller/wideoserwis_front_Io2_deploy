@@ -13,7 +13,7 @@ export class Home extends Component {
             <Center p={4} minHeight="70vh">
               <VStack>
 
-                  <Heading size="2xl" mb={4} color="gray.700">
+                  <Heading size="2xl" mb={4} color="gray.700" className={'homeText'}>
                     Co chcesz obejrzeć ?
                   </Heading>
                   <HStack>

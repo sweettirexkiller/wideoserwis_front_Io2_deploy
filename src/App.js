@@ -17,7 +17,7 @@ const App = () => {
 
   useEffect(()=>{
     //check if token is valid = date is not expired, if it is expired then remove it
-    if(token.token){
+    if(token && token.token){
       const decode = JSON.parse(atob(token.token.split('.')[1]));
       if (decode.exp * 1000 < new Date().getTime()) {
         logout();
