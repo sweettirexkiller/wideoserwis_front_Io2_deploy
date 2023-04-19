@@ -169,9 +169,10 @@ const Register = () => {
                          name="nickName"
                          onChange={handleChange}
                          onBlur={handleBlur}
+                         id={'registerNicknameInput'}
                          value={values.nickName}
                   />
-                  {errors.nickName && touched.nickName && <FormErrorMessage>Nick name is required.</FormErrorMessage>}
+                  {errors.nickName && touched.nickName && <FormErrorMessage id={'nickNameErrorMessage'}>Nick name is required.</FormErrorMessage>}
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.firstname && touched.firstname)}
@@ -181,6 +182,7 @@ const Register = () => {
                          type="text"
                          name="firstname"
                          onChange={handleChange}
+                         id={'registerNameInput'}
                          onBlur={handleBlur}
                          value={values.firstname}
                   />
@@ -192,6 +194,7 @@ const Register = () => {
                   <FormLabel>Surname</FormLabel>
                   <Input placeholder='Last name'
                          type="text"
+                         id={'registerSurnameInput'}
                          name="surname"
                          onChange={handleChange}
                          onBlur={handleBlur}
@@ -207,9 +210,10 @@ const Register = () => {
                           name="userType"
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          id={'registerUserTypeInput'}
                           value={values.userType}>
-                    <option value='creator'>Creator</option>
-                    <option value='viewer'>Viewer</option>
+                    <option value='creator' id={'userTypeCreator'}>Creator</option>
+                    <option value='viewer' id={'userTypeViewer'}>Viewer</option>
                   </Select>
 
                   {errors.userType && touched.userType && <FormErrorMessage>User type is required.</FormErrorMessage>}
@@ -222,6 +226,7 @@ const Register = () => {
                           name="email"
                           onChange={handleChange}
                           onBlur={handleBlur}
+                          id={'registerEmailInput'}
                           value={values.email}
                           placeholder='E-mail'/>
                   {errors.email && touched.email && <FormErrorMessage>Invalid email address</FormErrorMessage>}
@@ -233,11 +238,12 @@ const Register = () => {
                   <Input placeholder='Password'
                          type="password"
                          name="password"
+                         id={'registerPasswordInput'}
                          onChange={handleChange}
                          onBlur={handleBlur}
                          value={values.password}
                   />
-                  {errors.password && touched.password && <FormErrorMessage>Password is required.{errors.password}</FormErrorMessage>}
+                  {errors.password && touched.password && <FormErrorMessage id={'passwordErrorMessage'}>Password is required.{errors.password}</FormErrorMessage>}
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.confirm && touched.confirm)}
@@ -246,6 +252,7 @@ const Register = () => {
                   <Input placeholder='Password'
                          type="password"
                          name="confirm"
+                         id={'registerConfirmPasswordInput'}
                          onChange={handleChange}
                          onBlur={handleBlur}
                          value={values.confirm}
@@ -254,6 +261,7 @@ const Register = () => {
                 </FormControl>
                 <HStack w={'100%'} justifyContent={"space-evenly"}>
                   <Button disabled={isSubmitting}
+                          id={'registerSubmitButton'}
                           onClick={(e)=>{handleSubmit()}}
                   >
                     Submit

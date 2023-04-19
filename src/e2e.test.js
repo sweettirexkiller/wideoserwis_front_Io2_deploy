@@ -1,6 +1,5 @@
 import puppeteer from 'puppeteer-core';
-
-
+import { fireEvent } from '@testing-library/react';
 
 
 describe('rejestracja (widz) - logowanie - obejrzenie filmu', ()=> {
@@ -116,13 +115,12 @@ it("Użytkownik przechodzi do strony rejestracji", async () => {
 
 
   it("Użytkownik wprowadza błędne dane w formularzu, zatwierdza, poprawia i zatwierdza", async () => {
-    // 5. Użytkownik wprowadza błędne dane w formularzu, zatiwerdza, poprawia i zatwierdza
+    // 5. Użytkownik wprowadza błędne dane w formularzu
     let email = "abdc123";
     let nickname = "";
     let name = "Krzysztof";
     let surname = "Kowalski";
     let password = "kicia345";
-    let type = "Viewer";
 
     await page.goto("http://localhost:3000/register",  {waitUntil: 'load', timeout: 60000});
     await page.waitForSelector("#registerForm");
@@ -132,28 +130,61 @@ it("Użytkownik przechodzi do strony rejestracji", async () => {
     );
     expect(registerFormTitle).toContain("Register");
 
+    await page.click("#registerEmailInput");
+    await page.type("#registerEmailInput", email);
+
+    await page.click("#registerNicknameInput");
+    await page.type("#registerNicknameInput", nickname);
+
+    await page.click("#registerNameInput");
+    await page.type("#registerNameInput", name);
+
+    await page.click("#registerSurnameInput");
+    await page.type("#registerSurnameInput", surname);
+
+    await page.click("#registerPasswordInput");
+    await page.type("#registerPasswordInput", password);
+    await page.click("#registerConfirmPasswordInput");
+    await page.type("#registerConfirmPasswordInput", password);
+
+    await page.select('#registerUserTypeInput', 'viewer')
+
     // 6. Użytkownik zatwierdza formularz rejestracji
+    await page.click("#registerSubmitButton");
+
+    // 7. Użytkownik otrzymuje komunikat o błądach w formularzu:
+    //   - niepoprawny adres e-mail
+    //   - brak pseudonimu
+
+
+    //
+    const passwordErrorMessage = await page.$eval(
+      "#passwordErrorMessage",
+      (e) => e.textContent
+    );
+    expect(passwordErrorMessage).toContain("Password is required.Password requires an uppercase letter");
+
+
+    const nickNameErrorMessage = await page.$eval(
+      "#nickNameErrorMessage",
+      (e) => e.textContent
+    );
+    expect(nickNameErrorMessage).toContain("Nick name is required.");
+
+
+    // 8. Użytkownik wprowadza poprawione dane:
+    //  adres e-mail: krzyskowal@pw.edu.pl
+    //  pseudonim: krzyskowal
+    // 9. Użytkownik zatwierdza formularz rejestracji
+    // 10. Użytkownik zostaje zarejestrowany i przekierowany do strony logowania
+    //   11. Użytkownik loguje się na nowo założone konto wpisując niepoprawne hasło
+    //   12. Użytkownik dostaje informację o niepoprawnym haśle
+    //   13. Użytkownik wpisuje poprawne hasło i zatwierdza formularz logowania
+    //   14. Użytkownik zostaje pomyślnie zalogowany i przekierowany do strony głównej serwisu
+
   });
 
-
-
-  // 7. Użytkownik otrzymuje komunikat o błądach w formularzu:
-  //   - niepoprawny adres e-mail
-  //   - brak pseudonimu
-  // 8. Użytkownik wprowadza poprawione dane:
-  //  adres e-mail: krzyskowal@pw.edu.pl
-  //  pseudonim: krzyskowal
-  // 9. Użytkownik zatwierdza formularz rejestracji
-  // 10. Użytkownik zostaje zarejestrowany i przekierowany do strony logowania
-
-  //   11. Użytkownik loguje się na nowo założone konto wpisując niepoprawne hasło
-  //   12. Użytkownik dostaje informację o niepoprawnym haśle
-  //   13. Użytkownik wpisuje poprawne hasło i zatwierdza formularz logowania
-  //   14. Użytkownik zostaje pomyślnie zalogowany i przekierowany do strony głównej serwisu
-
-
   //TODO: dotąd napisać testy
-
 
   //   15. Użytkownik wpisuje w formularz wyszukiwania kryterium wyszukiwania "Test Video 123"
   //   16. Użytkownik zostaje przekierowany do strony wyników wyszukiwania (lista wyników)
