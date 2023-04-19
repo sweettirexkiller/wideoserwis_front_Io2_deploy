@@ -72,6 +72,7 @@ export default function WithSubnavigation() {
                     fontSize={'sm'}
                     fontWeight={400}
                     colorScheme='blue'
+                    id={'logoutButton'}
                     onClick={handleClick}
             >
               Log Out

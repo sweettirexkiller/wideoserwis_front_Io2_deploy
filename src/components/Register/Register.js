@@ -13,7 +13,7 @@ import {
   FormErrorMessage,
   FormLabel,
   HStack,
-  Input, Select, Stack, useToast,
+  Input, Select, Stack, Text, useToast,
   VStack,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -131,7 +131,8 @@ const Register = () => {
               /* and other goodies */
             }) => (
             <Form onSubmit={handleSubmit}>
-              <VStack justifyContent={"space-evenly"} w={'100%'} h={'100%'}>
+              <VStack justifyContent={"space-evenly"} w={'100%'} h={'100%'} id={'registerForm'}>
+                <Center><Text id={'registerTitleText'}>Register</Text></Center>
                 <FormControl id="userName">
                   <FormLabel>User Icon</FormLabel>
                   <Stack direction={['column', 'row']} spacing={6}>

@@ -1,9 +1,18 @@
 import puppeteer from 'puppeteer-core';
 
-describe('rejestracja (widz) - logowanie - obejrzenie filmu', ()=> {
 
+
+
+describe('rejestracja (widz) - logowanie - obejrzenie filmu', ()=> {
+  jest.setTimeout(60000);
   let browser;
   let page;
+
+  const TEST_PROFILE_EMAIL = "piotr@piotr.pl";
+  const TEST_PROFILE_PASSWORD = "Password1!2@";
+  const TEST_PROFILE_SURNAME = "jankiewicz";
+  const TEST_PROFILE_NICKNAME = "piotrus";
+  const WRONG_TEST_PASSWORD ='Password1!2@1234';
 
   beforeAll(async ()=>{
     browser = await puppeteer.launch({
@@ -18,7 +27,7 @@ describe('rejestracja (widz) - logowanie - obejrzenie filmu', ()=> {
 
   // 1. Użytkownik otwiera stronę w przeglądarce
   it("Użytkownik otwiera stronę w przeglądarce", async () => {
-    await page.goto("http://localhost:3000");
+    await page.goto("http://localhost:3000",  {waitUntil: 'load', timeout: 60000});
     await page.waitForSelector(".homeText");
 
     const text = await page.$eval(
@@ -28,51 +37,124 @@ describe('rejestracja (widz) - logowanie - obejrzenie filmu', ()=> {
     expect(text).toContain("Co chcesz obejrzeć ?");
   });
   // 2. Użytkownik wchodzi na stronę logowania, wpisując e-mail i hasło
-
   it("Użytkownik wchodzi na stronę logowania, wpisując e-mail i hasło", async () => {
-    await page.goto("http://localhost:3000/login");
-    await page.waitForSelector(".loginText");
+    await page.goto("http://localhost:3000/log-in",  {waitUntil: 'load', timeout: 60000});
+    await page.waitForSelector(".loginForm");
 
-    const text = await page.$eval(
-      ".loginText",
+    await page.click("#loginEmailInput");
+    await page.type("#loginEmailInput", TEST_PROFILE_EMAIL);
+
+    await page.click("#loginPasswordInput");
+    await page.type("#loginPasswordInput",TEST_PROFILE_PASSWORD);
+
+    await page.click("#loginSubmitButton");
+
+    await page.waitForSelector("#profileDataDiv");
+
+    const nickname = await page.$eval(
+      "#profilePageDataNickname",
       (e) => e.textContent
     );
-    expect(text).toContain("Zaloguj się");
+    expect(nickname).toContain(TEST_PROFILE_NICKNAME);
+
+
+    const surname = await page.$eval(
+      "#profilePageDataSurname",
+      (e) => e.textContent
+    );
+    expect(surname).toContain(TEST_PROFILE_SURNAME);
+
+    const email = await page.$eval(
+      "#profilePageDataEmail",
+      (e) => e.textContent
+    );
+    expect(email).toContain(TEST_PROFILE_EMAIL);
+
+    await page.click("#logoutButton");
+    await page.waitForSelector(".loginForm");
+    const loginFormTitle = await page.$eval(
+      "#loginTitleText",
+      (e) => e.textContent
+    );
+    expect(loginFormTitle).toContain("Log In");
+
   });
 
 
   // 3. Konto użytkownika nie istnieje, więc pojawia się stosowny błąd
   it("Konto użytkownika nie istnieje, więc pojawia się stosowny błąd", async () => {
-    await page.goto("http://localhost:3000/login");
-    await page.waitForSelector(".loginText");
+    await page.goto("http://localhost:3000/log-in",  {waitUntil: 'load', timeout: 60000});
+    await page.waitForSelector(".loginForm");
 
-    const text = await page.$eval(
-      ".loginText",
+    await page.click("#loginEmailInput");
+    await page.type("#loginEmailInput", TEST_PROFILE_EMAIL);
+
+    await page.click("#loginPasswordInput");
+    await page.type("#loginPasswordInput", WRONG_TEST_PASSWORD);
+
+    await page.click("#loginSubmitButton");
+
+    await page.waitForSelector("#loginErrorDiv");
+
+    const message = await page.$eval(
+      "#loginErrorMessage",
       (e) => e.textContent
     );
-    expect(text).toContain("Zaloguj się");
+    expect(message).toContain("Incorrect password.");
   });
   // 4. Użytkownik przechodzi do strony rejestracji
-  // 5. Użytkownik wprowadza dane w formularzu:
-  //   adres e-mail: abdc123
-  // pseudonim: <brak>
-  //   imię: Krzysztof
-  //   nazwisko: Kowalski
-  //   hasło: kicia345
-  //   widz/twórca: widz
-  //   6. Użytkownik zatwierdza formularz rejestracji
-  //   7. Użytkownik otrzymuje komunikat o błądach w formularzu:
+it("Użytkownik przechodzi do strony rejestracji", async () => {
+  await page.goto("http://localhost:3000/register",  {waitUntil: 'load', timeout: 60000});
+  await page.waitForSelector("#registerForm");
+  const registerFormTitle = await page.$eval(
+    "#registerTitleText",
+    (e) => e.textContent
+  );
+  expect(registerFormTitle).toContain("Register");
+});
+
+
+
+  it("Użytkownik wprowadza błędne dane w formularzu, zatwierdza, poprawia i zatwierdza", async () => {
+    // 5. Użytkownik wprowadza błędne dane w formularzu, zatiwerdza, poprawia i zatwierdza
+    let email = "abdc123";
+    let nickname = "";
+    let name = "Krzysztof";
+    let surname = "Kowalski";
+    let password = "kicia345";
+    let type = "Viewer";
+
+    await page.goto("http://localhost:3000/register",  {waitUntil: 'load', timeout: 60000});
+    await page.waitForSelector("#registerForm");
+    const registerFormTitle = await page.$eval(
+      "#registerTitleText",
+      (e) => e.textContent
+    );
+    expect(registerFormTitle).toContain("Register");
+
+    // 6. Użytkownik zatwierdza formularz rejestracji
+  });
+
+
+
+  // 7. Użytkownik otrzymuje komunikat o błądach w formularzu:
   //   - niepoprawny adres e-mail
   //   - brak pseudonimu
-  //   8. Użytkownik wprowadza poprawione dane:
-  //   adres e-mail: krzyskowal@pw.edu.pl
-  //   pseudonim: krzyskowal
-  //   9. Użytkownik zatwierdza formularz rejestracji
-  //   10. Użytkownik zostaje zarejestrowany i przekierowany do strony logowania
+  // 8. Użytkownik wprowadza poprawione dane:
+  //  adres e-mail: krzyskowal@pw.edu.pl
+  //  pseudonim: krzyskowal
+  // 9. Użytkownik zatwierdza formularz rejestracji
+  // 10. Użytkownik zostaje zarejestrowany i przekierowany do strony logowania
+
   //   11. Użytkownik loguje się na nowo założone konto wpisując niepoprawne hasło
   //   12. Użytkownik dostaje informację o niepoprawnym haśle
   //   13. Użytkownik wpisuje poprawne hasło i zatwierdza formularz logowania
   //   14. Użytkownik zostaje pomyślnie zalogowany i przekierowany do strony głównej serwisu
+
+
+  //TODO: dotąd napisać testy
+
+
   //   15. Użytkownik wpisuje w formularz wyszukiwania kryterium wyszukiwania "Test Video 123"
   //   16. Użytkownik zostaje przekierowany do strony wyników wyszukiwania (lista wyników)
   //   17. Użytkownik klika na pierwszy z wyników  i zostaje przekierowany do strony filmu "Test Video 123"

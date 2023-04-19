@@ -17,11 +17,11 @@ const ProfileAvatarTop = () => {
       <Box>
         <Avatar size='lg' src={data && data.avatarImage} />
       </Box>
-      <Box>
+      <Box id={'profileDataDiv'}>
         <VStack display={'flex'} flexDirection={'column'} justifyContent={'flex-start'} alignItems={'flex-start'}>
-          <Text fontSize='2xl' as='b'>{data && data.nickName}</Text>
-          <Text as='i'>{data && data.name} {data && data.surname}</Text>
-          <Text as='kbd'>{data && data.email}</Text>
+          <Text fontSize='2xl' as='b' id={'profilePageDataNickname'}>{data && data.nickName}</Text>
+          <Text as='i' id={'profilePageDataSurname'}>{data && data.name} {data && data.surname}</Text>
+          <Text as='kbd' id={'profilePageDataEmail'}>{data && data.email}</Text>
         </VStack>
       </Box>
     </HStack>

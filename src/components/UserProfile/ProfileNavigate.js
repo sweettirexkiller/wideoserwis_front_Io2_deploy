@@ -9,11 +9,11 @@ const ProfileNavigate = () => {
   const { token } = useSelector((state) => state.auth);
   if (!token) {
     return <Navigate to="/log-in" />;
-  }
-
-  const decode = JSON.parse(atob(token.token.split('.')[1]));
-  if (decode.exp * 1000 < new Date().getTime()) {
-    return <Navigate to="/log-in" />;
+  } else if (token.token) {
+    const decode = JSON.parse(atob(token.token.split('.')[1]));
+    if (decode.exp * 1000 < new Date().getTime()) {
+      return <Navigate to="/log-in" />;
+    }
   }
 
   return (

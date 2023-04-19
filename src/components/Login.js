@@ -27,8 +27,8 @@ import { login } from '../slices/auth';
 
 export default function Login() {
 
-    const dispatch = useDispatch();
-    let navigate = useNavigate();
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -51,14 +51,13 @@ export default function Login() {
     setLoading(true);
 
     dispatch(login({ email, password }))
-      .then(() => {
+      .then((e) => {
         setLoading(false);
-        navigate("/profile");
+        // dispatch(clearMessage());
+        // navigate("/profile");
+        // console.log(e);
       });
   };
-  useEffect(() => {
-    dispatch(clearMessage());
-  }, [dispatch]);
 
   if (isLoggedIn) {
     return <Navigate to="/profile" />;
@@ -84,14 +83,15 @@ export default function Login() {
                   isSubmitting,
                   /* and other goodies */
               }) => (
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} className={'loginForm'}>
                     <VStack justifyContent={"space-evenly"} w={'100%'} h={'100%'}>
-                        <Center><Text>Log In</Text></Center>
+                        <Center><Text id={'loginTitleText'}>Log In</Text></Center>
                         <FormControl isRequired isInvalid={(errors.email && touched.email)}>
                             <FormLabel>Email</FormLabel>
                             <Input
                                    type="text"
                                    name="email"
+                                   id={'loginEmailInput'}
                                    onChange={handleChange}
                                    onBlur={handleBlur}
                                    value={values.email}/>
@@ -102,13 +102,14 @@ export default function Login() {
                             <Input
                                    type="password"
                                    name="password"
+                                   id={'loginPasswordInput'}
                                    onChange={handleChange}
                                    onBlur={handleBlur}
                                    value={values.password}/>
                             {errors.password && touched.password && <FormErrorMessage>Required.</FormErrorMessage>}
                         </FormControl>
                         <HStack w={'100%'} justifyContent={"space-evenly"}>
-                            <Button onClick={(e)=>{handleSubmit()}} variant="solid" colorScheme='teal'>
+                            <Button onClick={(e)=>{handleSubmit()}} variant="solid" colorScheme='teal' id={'loginSubmitButton'}>
                               {loading && (
                                <Spinner/>
                               )}
@@ -121,9 +122,9 @@ export default function Login() {
                 </Formik>
             </Flex>
           {message && (
-            <Alert status='error'>
+            <Alert status='error' id={'loginErrorDiv'}>
               <AlertIcon />
-              <AlertTitle>{message}</AlertTitle>
+              <AlertTitle id={'loginErrorMessage'}>{message}</AlertTitle>
             </Alert>
           )}
           </VStack>
