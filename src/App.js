@@ -11,8 +11,19 @@ import PageNotFound from './components/PageNotFound';
 
 const App = () => {
 
-  const { user: currentUser } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
+
+  useEffect(()=>{
+    //check if token is valid = date is not expired, if it is expired then remove it
+    if(token.token){
+      const decode = JSON.parse(atob(token.token.split('.')[1]));
+      if (decode.exp * 1000 < new Date().getTime()) {
+        logout();
+      }
+    }
+  }, [token, isLoggedIn]);
 
   const logOut = useCallback(() => {
     dispatch(logout());
@@ -26,8 +37,7 @@ const App = () => {
     return () => {
       EventBus.remove("logout");
     };
-    }, [currentUser, logOut]);
-
+    }, [logOut]);
 
     return (
       <Layout>
