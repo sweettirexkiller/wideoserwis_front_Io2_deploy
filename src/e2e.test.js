@@ -38,7 +38,6 @@ describe('rejestracja (widz) - logowanie - obejrzenie filmu', ()=> {
   // 2. Użytkownik wchodzi na stronę logowania, wpisując e-mail i hasło
   it("Użytkownik wchodzi na stronę logowania, wpisując e-mail i hasło", async () => {
     await page.goto("http://localhost:3000/log-in",  {waitUntil: 'load', timeout: 60000});
-    await page.waitForSelector(".loginForm");
 
     await page.click("#loginEmailInput");
     await page.type("#loginEmailInput", TEST_PROFILE_EMAIL);
