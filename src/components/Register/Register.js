@@ -73,10 +73,9 @@ const Register = () => {
   const handleRegister = (formValue) => {
     const { nickName: nickname, firstname, surname: lastname, userType, email, password, avatarImage } = formValue;
 
-    const type = 0;
     setSuccessful(false);
 
-    dispatch(register({ nickname, firstname, lastname,userType: type, email, password, avatarImage }))
+    dispatch(register({ nickname, firstname, lastname,userType, email, password, avatarImage }))
       .unwrap()
       .then(() => {
         setSuccessful(true);

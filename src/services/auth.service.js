@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export const API_URL = "https://videoserviceapi.azurewebsites.net";
+// const apiUrl = process.env.NODE_ENV === 'production' ? process.env.REACT_APP_PROD_API_URL : process.env.REACT_APP_DEV_API_URL;
+// export const API_URL = "https://videoserviceapi.azurewebsites.net";
+export const API_URL = "http://localhost:5180";
 
 const register = ( nickname, firstname, lastname,userType,email, password, avatarImage) => {
   return axios.post(API_URL + "/api/register", {

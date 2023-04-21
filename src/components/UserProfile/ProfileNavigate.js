@@ -4,9 +4,12 @@ import Profile from './Profile';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileAvatarTop from './ProfileAvatarTop';
+import { useGetUserByIdQuery } from '../../services/authAPI';
+import YourVideos from './YourVideos/YourVideos';
 
 const ProfileNavigate = () => {
   const { token } = useSelector((state) => state.auth);
+
   if (!token) {
     return <Navigate to="/log-in" />;
   } else if (token.token) {
@@ -15,6 +18,8 @@ const ProfileNavigate = () => {
       return <Navigate to="/log-in" />;
     }
   }
+
+
 
   return (
     <VStack
@@ -35,7 +40,7 @@ const ProfileNavigate = () => {
 
         <TabPanels width={'100vh'}>
           <TabPanel h={'calc(100vh)'} bg={'gray.50'}>
-            <p>Your videos will be here.</p>
+            <YourVideos token={token}/>
           </TabPanel>
           <TabPanel h={'calc(100vh)'} bg={'gray.50'}>
             <p>Your "Watch later" playlist should be here.</p>

@@ -7,6 +7,7 @@ import SuccessRegister from './components/SuccessRegister';
 import Videos from './components/Videos/Videos';
 import SuccessDeleting from './components/UserProfile/SuccessDeleting';
 import ProfileNavigate from './components/UserProfile/ProfileNavigate';
+import SingleVideoElement from './components/Videos/SingleVideoElement';
 
 const AppRoutes = [
   {
@@ -38,6 +39,10 @@ const AppRoutes = [
   },{
     path: '/success-deleting',
     element: <SuccessDeleting/>
+  },
+  {
+    path: '/videos/:id',
+    element: <SingleVideoElement/>
   }
 ];
 

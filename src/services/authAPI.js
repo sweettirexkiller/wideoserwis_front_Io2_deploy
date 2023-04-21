@@ -38,6 +38,9 @@ export const authAPI = createApi({
         }),
       }),
 
+      getUserVideos: builder.query({
+        query: (id ) => `/api/user/videos?id=${id}`,
+      }),
       deleteUser: builder.mutation({
         query(id) {
           return {
@@ -53,4 +56,4 @@ export const authAPI = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetUserByIdQuery, useDeleteUserMutation, useUpdateUserMutation } = authAPI;
+export const { useGetUserByIdQuery, useDeleteUserMutation, useUpdateUserMutation, useGetUserVideosQuery } = authAPI;
