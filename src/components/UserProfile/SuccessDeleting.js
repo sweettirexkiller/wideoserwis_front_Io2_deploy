@@ -6,7 +6,7 @@ import { InfoIcon } from '@chakra-ui/icons';
 const SuccessDeleting = ()=> {
   const navigate = useNavigate();
   return(
-    <Box textAlign="center" py={50} px={6}  h='calc(90vh)'>
+    <Box textAlign="center" py={50} px={6}  h='calc(90vh)' id={'successAccountDeletionConfirmationBox'}>
       <InfoIcon boxSize={'50px'} color={'blue.500'} />
       <Heading as="h2" size="xl" mt={6} mb={2}>
         Konto prawidłowo usunięte z naszej platformy.

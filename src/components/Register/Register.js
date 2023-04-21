@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { clearMessage } from '../../slices/messege';
 import { register } from '../../slices/auth';
 import {
+  Alert, AlertIcon, AlertTitle,
   Avatar,
   Button,
   Center,
@@ -212,7 +213,7 @@ const Register = () => {
                           id={'registerUserTypeInput'}
                           value={values.userType}>
                     <option value='creator' id={'userTypeCreator'}>Creator</option>
-                    <option value='viewer' id={'userTypeViewer'}>Viewer</option>
+                    <option value='simple' id={'userTypeSimple'}>Simple</option>
                   </Select>
 
                   {errors.userType && touched.userType && <FormErrorMessage>User type is required.</FormErrorMessage>}
@@ -273,17 +274,14 @@ const Register = () => {
       </Flex>
     </Center>
 
+      <Center>
       {message && (
-        <div className="form-group">
-          <div
-            className={successful ? "alert alert-success" : "alert alert-danger"}
-            role="alert"
-          >
-            {message}
-          </div>
-        </div>
+        <Alert status='error' id={'registerErrorDiv'}>
+          <AlertIcon />
+          <AlertTitle id={'loginErrorMessage'}>{message}</AlertTitle>
+        </Alert>
       )}
-
+      </Center>
     </div>
   );
 };

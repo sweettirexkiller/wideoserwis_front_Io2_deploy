@@ -35,7 +35,7 @@ const ProfileNavigate = () => {
         <TabList width={'calc(100vw)'} display={'flex'} marginX={0}>
           <Tab>Your Videos</Tab>
           <Tab>Your Playlist</Tab>
-          <Tab>Edit Profile</Tab>
+          <Tab><div id={'EditProfileNavTab'}>Edit Profile</div></Tab>
         </TabList>
 
         <TabPanels width={'100vh'}>

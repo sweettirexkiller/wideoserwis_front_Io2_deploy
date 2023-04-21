@@ -236,6 +236,7 @@ const EditProfileData = ({ onDeleteAccountDialog, data})=> {
                   bg: 'gray.500',
                 }}
                 onClick={onDeleteAccountDialog}
+                id={'delete-account-button'}
               >
                 Delete Account
               </Button>

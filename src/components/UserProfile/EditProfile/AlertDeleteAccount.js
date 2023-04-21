@@ -47,7 +47,8 @@ const AlertDeleteAccount = ({isOpen, cancelRef, onClose, id}) => {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme='red' ml={3} onClick={handleDeleteAccountClick}>
+              <Button colorScheme='red' ml={3} onClick={handleDeleteAccountClick}
+              id={'confirm-delete-account'}>
                 Delete
               </Button>
             </AlertDialogFooter>

@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 const SuccessRegister = ()=> {
   const navigate = useNavigate();
   return (
-    <Box textAlign="center" py={10} px={6} h='calc(90vh)'>
+    <Box textAlign="center" py={10} px={6} h='calc(90vh)' id={'registerConfirmationBox'}>
       <CheckCircleIcon boxSize={'50px'} color={'green.500'} />
-      <Heading as="h2" size="xl" mt={6} mb={2}>
+      <Heading as="h2" size="xl" mt={6} mb={2} id={'successRegisterHeading'}>
         Konto poprawnie utworzone.
       </Heading>
       <Text color={'gray.500'}>

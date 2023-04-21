@@ -7,10 +7,10 @@ describe('rejestracja (widz) - logowanie - obejrzenie filmu', ()=> {
   let browser;
   let page;
 
-  const TEST_PROFILE_EMAIL = "piotr@piotr.pl";
+  const TEST_PROFILE_EMAIL = "piotrul@piotr.pl";
   const TEST_PROFILE_PASSWORD = "Password1!2@";
-  const TEST_PROFILE_SURNAME = "jankiewicz";
-  const TEST_PROFILE_NICKNAME = "piotrus";
+  const TEST_PROFILE_SURNAME = "kolo kaminski";
+  const TEST_PROFILE_NICKNAME = "kuba";
   const WRONG_TEST_PASSWORD ='Password1!2@1234';
 
   beforeAll(async ()=>{
@@ -146,7 +146,7 @@ it("Użytkownik przechodzi do strony rejestracji", async () => {
     await page.click("#registerConfirmPasswordInput");
     await page.type("#registerConfirmPasswordInput", password);
 
-    await page.select('#registerUserTypeInput', 'viewer')
+    await page.select('#registerUserTypeInput', 'simple')
 
     // 6. Użytkownik zatwierdza formularz rejestracji
     await page.click("#registerSubmitButton");
@@ -155,8 +155,6 @@ it("Użytkownik przechodzi do strony rejestracji", async () => {
     //   - niepoprawny adres e-mail
     //   - brak pseudonimu
 
-
-    //
     const passwordErrorMessage = await page.$eval(
       "#passwordErrorMessage",
       (e) => e.textContent
@@ -170,17 +168,95 @@ it("Użytkownik przechodzi do strony rejestracji", async () => {
     );
     expect(nickNameErrorMessage).toContain("Nick name is required.");
 
-
     // 8. Użytkownik wprowadza poprawione dane:
     //  adres e-mail: krzyskowal@pw.edu.pl
     //  pseudonim: krzyskowal
+    await page.click("#registerEmailInput");
+    for(let i=0; i< 10; i++){
+      await page.keyboard.press('Backspace');
+    }
+    await page.type("#registerEmailInput", "krzyskowal2@pw.edu.pl");
+
+    await page.click("#registerNicknameInput");
+    await page.type("#registerNicknameInput", "krzyskowal");
+
+    await page.click("#registerPasswordInput");
+    for(let i=0; i< 10; i++){
+      await page.keyboard.press('Backspace');
+    }
+
+    await page.type("#registerPasswordInput", "Password1!2@");
+    await page.click("#registerConfirmPasswordInput");
+
+    for(let i=0; i< 10; i++){
+      await page.keyboard.press('Backspace');
+    }
+    await page.type("#registerConfirmPasswordInput", "Password1!2@");
+
     // 9. Użytkownik zatwierdza formularz rejestracji
-    // 10. Użytkownik zostaje zarejestrowany i przekierowany do strony logowania
-    //   11. Użytkownik loguje się na nowo założone konto wpisując niepoprawne hasło
+    await page.click("#registerSubmitButton");
+
+    // 10. Użytkownik zostaje zarejestrowany i przekierowany do strony potwierdzajacej rejestracje
+
+    await page.waitForSelector("#registerConfirmationBox");
+
+    const successRegisterHeading = await page.$eval(
+      "#successRegisterHeading",
+      (e) => e.textContent
+    );
+    expect(successRegisterHeading).toContain("Konto poprawnie utworzone.");
+
+  });
+
+
+  //   11. Użytkownik loguje się na nowo założone konto wpisując niepoprawne hasło
+
+  it("Użytkownik loguje się na nowo założone konto wpisując niepoprawne hasło", async () => {
+    await page.goto("http://localhost:3000/log-in",  {waitUntil: 'load', timeout: 60000});
+
+    await page.click("#loginEmailInput");
+    await page.type("#loginEmailInput", "krzyskowal2@pw.edu.pl");
+
+    await page.click("#loginPasswordInput");
+    await page.type("#loginPasswordInput","Password1!");
+
+    await page.click("#loginSubmitButton");
+
     //   12. Użytkownik dostaje informację o niepoprawnym haśle
+    await page.waitForSelector("#loginErrorDiv");
+
+    const message = await page.$eval(
+      "#loginErrorMessage",
+      (e) => e.textContent
+    );
+    expect(message).toContain("Incorrect password.");
+
+
     //   13. Użytkownik wpisuje poprawne hasło i zatwierdza formularz logowania
+
+    await page.click("#loginPasswordInput");
+    for(let i=0; i< 10; i++){
+      await page.keyboard.press('Backspace');
+    }
+    await page.type("#loginPasswordInput","Password1!2@");
+    await page.click("#loginSubmitButton");
+    await page.click("#EditProfileNavTab");
+
     //   14. Użytkownik zostaje pomyślnie zalogowany i przekierowany do strony głównej serwisu
 
+    await page.waitForSelector("#profileDataDiv");
+
+    const nickname = await page.$eval(
+      "#profilePageDataNickname",
+      (e) => e.textContent
+    );
+    expect(nickname).toContain("krzyskowal");
+
+    await page.click("#EditProfileNavTab");
+    await page.click("#delete-account-button");
+    await page.click("#confirm-delete-account");
+
+    await page.waitForSelector("#successAccountDeletionConfirmationBox");
   });
 
   //TODO: dotąd napisać testy
