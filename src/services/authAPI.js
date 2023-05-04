@@ -50,10 +50,25 @@ export const authAPI = createApi({
           }
         },
       }),
+      addVideoMetadata: builder.mutation({
+        query(data) {
+          return {
+            url: `/api/video-metadata`,
+            method: 'POST',
+            params: {
+              "title": data.title,
+              "description": data.description,
+              "thumbnail": data.thumbnail,
+              "tags": data.tags,
+              "visibility": data.visibility
+            },
+          }
+        },
+      }),
 
     }),
   })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetUserByIdQuery, useDeleteUserMutation, useUpdateUserMutation, useGetUserVideosQuery } = authAPI;
+export const { useGetUserByIdQuery, useDeleteUserMutation, useUpdateUserMutation, useGetUserVideosQuery, useAddVideoMetadataMutation } = authAPI;

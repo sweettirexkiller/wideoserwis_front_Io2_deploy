@@ -1,11 +1,13 @@
 import React from 'react';
-import {  Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
+import { Button, IconButton, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
 import Profile from './Profile';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileAvatarTop from './ProfileAvatarTop';
 import { useGetUserByIdQuery } from '../../services/authAPI';
 import YourVideos from './YourVideos/YourVideos';
+import { AddIcon } from '@chakra-ui/icons';
+import AddVideo from './AddVideo/AddVideo';
 
 const ProfileNavigate = () => {
   const { token } = useSelector((state) => state.auth);
@@ -36,6 +38,15 @@ const ProfileNavigate = () => {
           <Tab>Your Videos</Tab>
           <Tab>Your Playlist</Tab>
           <Tab><div id={'EditProfileNavTab'}>Edit Profile</div></Tab>
+          <Tab>
+            <Button>Add Video<IconButton
+            colorScheme='green'
+            aria-label='Search database'
+            size={'xs'}
+            marginLeft={2}
+            icon={<AddIcon />}
+          /></Button>
+            </Tab>
         </TabList>
 
         <TabPanels width={'100vh'}>
@@ -47,6 +58,9 @@ const ProfileNavigate = () => {
           </TabPanel>
           <TabPanel h={'calc(100vh)'} padding={0}>
             <Profile />
+          </TabPanel>
+          <TabPanel h={'calc(100vh)'} padding={0}>
+            <AddVideo/>
           </TabPanel>
         </TabPanels>
       </Tabs>

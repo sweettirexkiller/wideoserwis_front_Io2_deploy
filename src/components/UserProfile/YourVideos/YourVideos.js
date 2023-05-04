@@ -1,7 +1,8 @@
 import React from 'react';
 import { useGetUserVideosQuery } from '../../../services/authAPI';
-import { Spinner, VStack } from '@chakra-ui/react';
+import { IconButton, Spinner, VStack } from '@chakra-ui/react';
 import VideoElement from './VideoElement';
+import { AddIcon } from '@chakra-ui/icons';
 
 
 const YourVideos = ({token}) => {
@@ -12,6 +13,7 @@ const YourVideos = ({token}) => {
       {vidoesLoading && <Spinner size={'xl'}/>}
       <VStack>
       {!vidoesLoading && data && data.videos.map((video) => {
+        console.log(video);
         return(
           <VideoElement video={video}/>
         );
