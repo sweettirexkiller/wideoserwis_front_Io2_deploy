@@ -5,7 +5,7 @@ import React from 'react';
 const SuccessAddition = () => {
   return (
     <>
-      <Box textAlign="center" py={10} px={6} h='calc(90vh)' id={'registerConfirmationBox'}>
+      <Box textAlign="center" paddingTop={5} px={6} id={'videoAdditionConfirmationBox'}>
         <CheckCircleIcon boxSize={'50px'} color={'green.500'} />
         <Heading as="h2" size="xl" mt={6} mb={2} id={'successRegisterHeading'}>
           Video Poprawnie dodane.
@@ -16,6 +16,7 @@ const SuccessAddition = () => {
         <Button
           colorScheme="green"
           variant="solid"
+          marginTop={10}
         >
           Obejrz
         </Button>

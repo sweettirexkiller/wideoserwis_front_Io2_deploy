@@ -1,138 +1,111 @@
-import { FormControl, FormLabel, GridItem, Heading, Input, Select } from '@chakra-ui/react';
+import { Button, Center, FormControl, Heading } from '@chakra-ui/react';
 import React from 'react';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import FilePicker from 'chakra-ui-file-picker';
+import { useAddVideoFileMutation } from '../../../services/authAPI';
 
-const VideoFileForm = () => {
+const VideoFileForm = ({setStep, step, videoId, handles}) => {
+
+  const handleFileChange = async (e, setFieldValue) => {
+    const file = e[0];
+    setFieldValue('file', file);
+
+  };
+
+  const [addVideoFile, {isLoading, isError}] = useAddVideoFileMutation();
+
+  const handleFileFormSubmit = (values) => {
+    alert(
+      JSON.stringify(
+        {
+          fileName: values.file.name,
+          type: values.file.type,
+          size: `${values.file.size} bytes`
+        },
+        null,
+        2
+      )
+    );
+    const data = {
+      id: videoId,
+      file: values.file
+    };
+
+    addVideoFile(data)
+      .then((res) =>{
+
+        handles.handleSubmitButton();
+      })
+      .catch(()=>{});
+
+  };
+
   return (
     <>
       <Heading w="100%" textAlign={'center'} fontWeight="normal" mb="2%">
         Video File
       </Heading>
-      <FormControl as={GridItem} colSpan={[6, 3]}>
-        <FormLabel
-          htmlFor="country"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}>
-          Country / Region
-        </FormLabel>
-        <Select
-          id="country"
-          name="country"
-          autoComplete="country"
-          placeholder="Select option"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md">
-          <option>United States</option>
-          <option>Canada</option>
-          <option>Mexico</option>
-        </Select>
-      </FormControl>
+      <Formik
+        initialValues={{
+          file: null,
+        }}
+        validationSchema={Yup.object().shape({
+          file: Yup.mixed().required(),
+        })}
+        onSubmit={(values, { setSubmitting }) => {
+          setSubmitting(true);
+          handleFileFormSubmit(values);
+        }}
+      >
+        {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            /* and other goodies */
+          }) => {
+          return (
+            <>
+              <FormControl>
+                <Form>
+                  <Center w="full" marginY={5}>
+                    <Field name='thumbnail'>
+                      {({ form, field }) => {
+                        const { setFieldValue } = form
+                        return (
+                          <FilePicker
+                            onFileChange={(e) => handleFileChange(e, setFieldValue)}
+                            id="file"
+                            name="file"
+                            placeholder="Choose Video File"
+                            clearButtonLabel="Clear"
+                            multipleFiles={false}
+                            accept="video/mp4"
+                            hideClearButton={false}
+                            required={false}
+                          />
+                        )
+                      }}
+                    </Field>
+                  </Center>
+                  <ErrorMessage name="file"/>
+                  <Button type="submit" disabled={isSubmitting} onClick={(e)=>{handleSubmit()}}>
+                    Submit
+                  </Button>
+                </Form>
+              </FormControl>
+            </>
+          );
+        }}
+      </Formik>
 
-      <FormControl as={GridItem} colSpan={6}>
-        <FormLabel
-          htmlFor="street_address"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
-          Street address
-        </FormLabel>
-        <Input
-          type="text"
-          name="street_address"
-          id="street_address"
-          autoComplete="street-address"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
 
-      <FormControl as={GridItem} colSpan={[6, 6, null, 2]}>
-        <FormLabel
-          htmlFor="city"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
-          City
-        </FormLabel>
-        <Input
-          type="text"
-          name="city"
-          id="city"
-          autoComplete="city"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
 
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="state"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
-          State / Province
-        </FormLabel>
-        <Input
-          type="text"
-          name="state"
-          id="state"
-          autoComplete="state"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
 
-      <FormControl as={GridItem} colSpan={[6, 3, null, 2]}>
-        <FormLabel
-          htmlFor="postal_code"
-          fontSize="sm"
-          fontWeight="md"
-          color="gray.700"
-          _dark={{
-            color: 'gray.50',
-          }}
-          mt="2%">
-          ZIP / Postal
-        </FormLabel>
-        <Input
-          type="text"
-          name="postal_code"
-          id="postal_code"
-          autoComplete="postal-code"
-          focusBorderColor="brand.400"
-          shadow="sm"
-          size="sm"
-          w="full"
-          rounded="md"
-        />
-      </FormControl>
     </>
   );
 };
