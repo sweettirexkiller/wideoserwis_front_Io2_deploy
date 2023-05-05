@@ -1,4 +1,4 @@
-import { Button, Center, FormControl, Heading } from '@chakra-ui/react';
+import { Button, Center, FormControl, Heading, Spinner } from '@chakra-ui/react';
 import React from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
@@ -10,23 +10,11 @@ const VideoFileForm = ({setStep, step, videoId, handles}) => {
   const handleFileChange = async (e, setFieldValue) => {
     const file = e[0];
     setFieldValue('file', file);
-
   };
 
   const [addVideoFile, {isLoading, isError}] = useAddVideoFileMutation();
 
   const handleFileFormSubmit = (values) => {
-    alert(
-      JSON.stringify(
-        {
-          fileName: values.file.name,
-          type: values.file.type,
-          size: `${values.file.size} bytes`
-        },
-        null,
-        2
-      )
-    );
     const data = {
       id: videoId,
       file: values.file
@@ -34,11 +22,9 @@ const VideoFileForm = ({setStep, step, videoId, handles}) => {
 
     addVideoFile(data)
       .then((res) =>{
-
         handles.handleSubmitButton();
       })
       .catch(()=>{});
-
   };
 
   return (
@@ -95,6 +81,7 @@ const VideoFileForm = ({setStep, step, videoId, handles}) => {
                   <ErrorMessage name="file"/>
                   <Button type="submit" disabled={isSubmitting} onClick={(e)=>{handleSubmit()}}>
                     Submit
+                    {isLoading && <Spinner size={'sm'}/>}
                   </Button>
                 </Form>
               </FormControl>

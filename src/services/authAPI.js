@@ -69,14 +69,14 @@ export const authAPI = createApi({
         query(data) {
           const formData = new FormData();
           formData.append('videoFile', data.file);
-          console.log('what is going on ?');
+          console.log(data);
           return {
             url: `/api/video/${data.id}`,
             method: 'POST',
             body: formData,
             formData: true,
             headers: {
-              "Content-Type": "multipart/form-data;",
+              "Content-Type": undefined,
             },
           }
         },
