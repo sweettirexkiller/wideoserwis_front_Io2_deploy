@@ -48,28 +48,30 @@ export default function AddVideo() {
   }
 
   return (
-    <Flex
-      justifyContent={'flex'}
-      width={'100%'}
-      bg={'gray.50'}>
-      <Box
-        borderWidth="1px"
-        rounded="lg"
-        shadow="1px 1px 3px rgba(0,0,0,0.3)"
-        maxWidth={800}
-        p={6}
-        m="10px auto"
-        as="form">
-        <Progress
-          hasStripe
-          value={progress}
-          mb="5%"
-          mx="5%"
-          isAnimated/>
-        {step === 1 ?
-          <MetadataForm setVideoId={setVideoId} step={step} setStep={setStep} handles={handles}  />
-          : step === 2 ? <VideoFileForm videoId={videoId} step={step} setStep={setStep} handles={handles}/> : <SuccessAddition/>}
-      </Box>
-    </Flex>
+    <Box marginBottom={5}>
+      <Flex
+        justifyContent={'flex'}
+        width={'100%'}
+        bg={'gray.50'}>
+        <Box
+          borderWidth="1px"
+          rounded="lg"
+          shadow="1px 1px 3px rgba(0,0,0,0.3)"
+          maxWidth={800}
+          p={6}
+          m="10px auto"
+          as="form">
+          <Progress
+            hasStripe
+            value={progress}
+            mb="5%"
+            mx="5%"
+            isAnimated/>
+          {step === 1 ?
+            <MetadataForm setVideoId={setVideoId} step={step} setStep={setStep} handles={handles}  />
+            : step === 2 ? <VideoFileForm videoId={videoId} step={step} setStep={setStep} handles={handles}/> : <SuccessAddition/>}
+        </Box>
+      </Flex>
+    </Box>
   );
 };

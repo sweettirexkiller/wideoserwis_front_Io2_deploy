@@ -59,7 +59,7 @@ const ProfileNavigate = () => {
           <TabPanel h={'calc(100vh)'} padding={0}>
             <Profile />
           </TabPanel>
-          <TabPanel h={'calc(100vh)'} bg={'gray.50'} paddingY={5}>
+          <TabPanel h={'calc(100vh)'} bg={'gray.50'} paddingY={5} marginBottom={20}>
             <AddVideo/>
           </TabPanel>
         </TabPanels>

@@ -124,7 +124,7 @@ export default function Login() {
           {message && (
             <Alert status='error' id={'loginErrorDiv'}>
               <AlertIcon />
-              <AlertTitle id={'loginErrorMessage'}>{message}</AlertTitle>
+              <AlertTitle id={'loginErrorMessage'}>{JSON.stringify(message)}</AlertTitle>
             </Alert>
           )}
           </VStack>
