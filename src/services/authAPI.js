@@ -106,6 +106,83 @@ export const authAPI = createApi({
         },
       }),
 
+      //PLAYLISTS
+      getUserPlaylists:builder.query({
+        query: (id ) => `/api/playlist/user?id=${id}`,
+      }),
+
+      addVideoToPlaylist: builder.mutation({
+        query({playlistId, videoId}) {
+          return {
+            url: `/api/playlist/${playlistId}/${videoId}`,
+            method: 'POST'
+          }
+        },
+      }),
+
+      removeVideoFromPlaylist: builder.mutation({
+        query({playlistId, videoId}) {
+          return {
+            url: `/api/playlist/${playlistId}/${videoId}`,
+            method: 'DELETE',
+          }
+        },
+      }),
+
+      // COMMENTS
+      getAllCommentsOfVideo:builder.query({
+        query: (videoId ) => `/api/comment?id=${videoId}`,
+      }),
+      removeComment: builder.mutation({
+        query(commentId) {
+          return {
+            url: `/api/comment?id=${commentId}`,
+            method: 'DELETE',
+          }
+        },
+      }),
+      addCommentToVideo: builder.mutation({
+        query(data) {
+          return {
+            url: `/api/comment?id=${data.videoId}`,
+            method: 'POST',
+            body: data.comment
+          }
+        },
+      }),
+      getResponseOnComment:builder.query({
+        query: (commentId ) => `/api/comment/response?id=${commentId}`,
+      }),
+      addResponseToComment: builder.mutation({
+          query(data) {
+            return {
+              url: `/api/comment/response?id=${data.commentId}`,
+              method: 'POST',
+              body: data.response
+            }
+          },
+        }),
+
+      // REACTIONS
+
+      getVideoReactions:builder.query({
+        query: (videoId ) => `/api/video-reaction?id=${videoId}`,
+      }),
+      addReactionToVideo: builder.mutation({
+        query(data) {
+          return {
+            url: `/api/video-reaction?id=${data.videoId}`,
+            method: 'POST',
+            body: {
+              value: data.value // Positive or Negative
+            }
+          }
+        },
+      }),
+
+
+
+
 
     }),
   })
@@ -123,4 +200,14 @@ export const {
   useGetSubscriptionsQuery,
   useAddSubscriptionMutation,
   useDeleteSubscriptionMutation,
+  useGetUserPlaylistsQuery,
+  useAddVideoToPlaylistMutation,
+  useRemoveVideoFromPlaylistMutation,
+  useGetAllCommentsOfVideoQuery,
+  useRemoveCommentMutation,
+  useAddCommentToVideoMutation,
+  useGetResponseOnCommentQuery,
+  useAddResponseToCommentMutation,
+  useGetVideoReactionsQuery,
+  useAddReactionToVideoMutation
 } = authAPI;

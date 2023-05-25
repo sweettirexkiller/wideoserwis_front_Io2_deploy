@@ -14,10 +14,14 @@ import CommentSection from './Components/CommentSection/CommentSection';
 const SingleVideoElement = () => {
 
   const { id } = useParams();
-  const {data : video, isLoading} = useGetVideoMetadataQuery(id);
+  const {data : video, isLoading, isSuccess, isError, error} = useGetVideoMetadataQuery(id);
 
-  return isLoading ? <Spinner/> : (
-    <Box h={'calc(100vh)'} paddingY={10} background={'gray.100'}>
+
+  let content;
+  if (isLoading) {
+    content = <Spinner text="Loading..." />
+  } else if (isSuccess) {
+    content = (<Box h={'calc(100vh)'} paddingY={10} background={'gray.100'}>
       <VStack width={'80%'} alignSelf={'flex-start'} marginLeft={5}>
         <VideoPlayer id={id}/>
         <VideoTitle title={video.title} tags={video.tags}/>
@@ -25,8 +29,12 @@ const SingleVideoElement = () => {
         <Description description={video.description}/>
         <CommentSection/>
       </VStack>
-    </Box>
-  );
+    </Box>);
+  } else if (isError) {
+    content = <div>Some error occurred. You probably need to log out and log in again. {error.toString()}</div>
+  }
+
+  return content;
 };
 
 export default SingleVideoElement;

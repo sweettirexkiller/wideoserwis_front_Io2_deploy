@@ -14,7 +14,7 @@ const VideoInfoAndActions = ({video}) => {
       <HStack spacing={10}>
 
         <AddToPlaylist/>
-        <LikeOrDis/>
+        <LikeOrDis videoId={video.id}/>
 
         <Text> {video.viewCount} <ViewIcon paddingBottom={1} color={'grey.500'}/></Text>
 
