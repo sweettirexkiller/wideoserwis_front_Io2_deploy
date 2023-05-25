@@ -28,12 +28,11 @@ import { login } from '../slices/auth';
 export default function Login() {
 
   const dispatch = useDispatch();
-  let navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
   const { message } = useSelector((state) => state.message);
+  const {isLoggedIn} = useSelector((state) => state.auth);
 
   const FormSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -59,13 +58,12 @@ export default function Login() {
       });
   };
 
-  if (isLoggedIn) {
+  if(isLoggedIn) {
     return <Navigate to="/profile" />;
   }
 
-
   return(
-        <Center paddingY={10}   h='calc(90vh)'>
+        <Center paddingY={10}  h='full' minH={'calc(80vh)'}>
           <VStack>
             <Flex>
             <Formik

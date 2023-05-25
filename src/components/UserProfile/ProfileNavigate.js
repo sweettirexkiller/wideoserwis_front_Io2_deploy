@@ -53,13 +53,13 @@ const ProfileNavigate = () => {
           <TabPanel h={'full'} bg={'gray.50'}>
             <YourVideos token={token}/>
           </TabPanel>
-          <TabPanel h={'full'} bg={'gray.50'}>
+          <TabPanel h={'full'} bg={'gray.50'} minH={'calc(80vh)'}>
             <p>Your "Watch later" playlist should be here.</p>
           </TabPanel>
           <TabPanel h={'full'} padding={0}>
             <Profile />
           </TabPanel>
-          <TabPanel h={'full'} bg={'gray.50'} paddingY={5} marginBottom={20}>
+          <TabPanel h={'full'} bg={'gray.50'} paddingY={5} minH={'calc(80vh)'}>
             <AddVideo/>
           </TabPanel>
         </TabPanels>
