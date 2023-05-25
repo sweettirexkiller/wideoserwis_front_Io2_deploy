@@ -14,8 +14,9 @@ import {
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 import FilePicker from 'chakra-ui-file-picker';
-import {  useUpdateUserMutation } from '../../../services/authAPI';
+import { useGetUserByIdQuery, useGetUserVideosQuery, useUpdateUserMutation } from '../../../services/authAPI';
 import { convertToBase64 } from '../../../common/utils';
+import { useSelector } from 'react-redux';
 
 const EditProfileData = ({ onDeleteAccountDialog, data})=> {
 
@@ -23,6 +24,10 @@ const EditProfileData = ({ onDeleteAccountDialog, data})=> {
   const [currentAvatarImage, setCurrentAvatarImage] = useState(data.avatarImage);
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation()
   const [isAvatarChanged, setIsAvatarChanged] = useState(false);
+  const { token } = useSelector((state) => state.auth);
+  const {data:user, refetch} = useGetUserByIdQuery(token);
+  const decode = JSON.parse(atob(token.token.split('.')[1]));
+  const { refetch : refetchVideos} = useGetUserVideosQuery(decode.oid);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -64,7 +69,8 @@ const EditProfileData = ({ onDeleteAccountDialog, data})=> {
     };
     updateUser(values)
       .then(() =>{
-
+        refetch();
+        refetchVideos();
       })
       .catch(()=>{});
   };

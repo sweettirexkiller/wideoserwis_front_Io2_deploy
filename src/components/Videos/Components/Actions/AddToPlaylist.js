@@ -37,6 +37,7 @@ const AddToPlaylist = () => {
 
 
   console.log(playlists);
+
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const initialRef = React.useRef(null)

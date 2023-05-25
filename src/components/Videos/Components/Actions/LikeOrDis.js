@@ -13,8 +13,8 @@ const LikeOrDis = ({videoId}) => {
   const [addReactionToVideo, {isLoading :isLoadingReactToVideo, isSuccess:isAddingReactionSuccess}]  =  useAddReactionToVideoMutation()
   const {data, error, isLoading, isSuccess, refetch} = useGetVideoReactionsQuery(videoId);
 
-  console.log(data);
-  console.log(isLiked);
+  // console.log(data);
+  // console.log(isLiked);
 
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const LikeOrDis = ({videoId}) => {
         setIsLiked(!isLiked);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       })
   }
 

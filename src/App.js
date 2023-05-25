@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/Layout';
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import EventBus from "./common/EventBus";
 import PageNotFound from './components/PageNotFound';
 
 const App = () => {
-
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   const { isLoggedIn, token } = useSelector((state) => state.auth);
@@ -21,6 +21,7 @@ const App = () => {
       const decode = JSON.parse(atob(token.token.split('.')[1]));
       if (decode.exp * 1000 < new Date().getTime()) {
         logout();
+        navigate('/log-in');
       }
     }
   }, [token, isLoggedIn]);
