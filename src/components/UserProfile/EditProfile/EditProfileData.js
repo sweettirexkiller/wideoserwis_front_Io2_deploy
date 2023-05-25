@@ -22,12 +22,15 @@ const EditProfileData = ({ onDeleteAccountDialog, data})=> {
   const toast = useToast()
   const [currentAvatarImage, setCurrentAvatarImage] = useState(data.avatarImage);
   const [updateUser, { isLoading: isUpdating }] = useUpdateUserMutation()
+  const [isAvatarChanged, setIsAvatarChanged] = useState(false);
 
   const handleClick = (e) => {
     e.preventDefault();
   }
+
+
   const initialValues = {
-    nickName: data ? data.nickName : null,
+    nickName: data ? data.nickname : null,
     email: data ? data.email : null,
     firstname:data ? data.name : null,
     surname: data ? data.surname : null,
@@ -54,9 +57,12 @@ const EditProfileData = ({ onDeleteAccountDialog, data})=> {
     const { nickName: nickname, firstname: name, surname, avatarImage } = formValue;
     // console.log(`${nickname}, ${name}, ${surname}, ${avatarImage}`);
     const id = data.id;
-    updateUser({
-      nickname, name, surname, avatarImage, userType: data.userType, id
-    })
+
+    const values = { nickname, name, surname, userType: data.userType, id };
+    if (isAvatarChanged) {
+      values.avatarImage = avatarImage;
+    };
+    updateUser(values)
       .then(() =>{
 
       })
@@ -70,6 +76,7 @@ const EditProfileData = ({ onDeleteAccountDialog, data})=> {
       const base64 = await convertToBase64(file);
       setFieldValue('avatarImage', `${base64}`);
       setCurrentAvatarImage(base64);
+      setIsAvatarChanged(true);
     }
     else {
       setCurrentAvatarImage(null);

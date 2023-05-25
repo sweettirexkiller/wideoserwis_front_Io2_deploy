@@ -73,7 +73,6 @@ export const authAPI = createApi({
         query(data) {
           const formData = new FormData();
           formData.append('videoFile', data.file);
-          console.log(data);
           return {
             url: `/api/video/${data.id}`,
             method: 'POST',
@@ -85,6 +84,28 @@ export const authAPI = createApi({
           }
         },
       }),
+
+      // SUBSCRIPTIONS
+      getSubscriptions:builder.query({
+        query: (id ) => `/api/subscriptions?id=${id}`,
+      }),
+      addSubscription: builder.mutation({
+        query(id) {
+          return {
+            url: `/api/subscriptions?creatorId=${id}`,
+            method: 'POST'
+          }
+        },
+      }),
+      deleteSubscription: builder.mutation({
+        query(subscriptionId) {
+          return {
+            url: `/api/subscriptions?subId=${subscriptionId}`,
+            method: 'DELETE',
+          }
+        },
+      }),
+
 
     }),
   })
@@ -99,4 +120,7 @@ export const {
   useAddVideoMetadataMutation,
   useAddVideoFileMutation,
   useGetVideoMetadataQuery,
+  useGetSubscriptionsQuery,
+  useAddSubscriptionMutation,
+  useDeleteSubscriptionMutation,
 } = authAPI;

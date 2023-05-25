@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Card, CardBody, CardFooter, Heading, HStack, Image, Stack, Text } from '@chakra-ui/react';
+import { Badge, Box, Button, Card, CardBody, CardFooter, Heading, HStack, Image, Stack, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 const VideoElement = ({video}) => {
@@ -32,16 +32,27 @@ const VideoElement = ({video}) => {
           </Text>
         </CardBody>
 
-        <CardFooter width={'full'} display={'flex'}  flexDirection={'row'} justifyContent={'flex-end'}>
-          <HStack display={'flex'}  flexDirection={'row'} justifyContent={'flex-end'}>
-            <Button variant='solid' colorScheme='blue' onClick={()=>{
-              //redirect to video page
-              navigate(`/videos/${video.id}`);
-            }}>
-              Watch video
-            </Button>
-            <Button>Edit</Button>
-          </HStack>
+        <CardFooter width={'full'} display={'flex'}  flexDirection={'row'} justifyContent={'space-between'}>
+
+            <HStack>
+              {video.tags.map((tag, index) => {
+                return(
+                  <Badge key={index} colorScheme={'purple'}>
+                    {tag}
+                  </Badge>
+                );
+              })}
+            </HStack>
+
+            <HStack>
+              <Button variant='solid' colorScheme='blue' onClick={()=>{
+                //redirect to video page
+                navigate(`/videos/${video.id}`);
+              }}>
+                Watch video
+              </Button>
+              <Button>Edit</Button>
+            </HStack>
 
         </CardFooter>
       </Stack>
