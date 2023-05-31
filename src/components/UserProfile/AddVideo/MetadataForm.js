@@ -7,14 +7,14 @@ import {
   FormLabel,
   Heading, HStack, IconButton, Image,
   Input, Select, Spinner,
-  Stack, Textarea,
+  Stack, Text, Textarea,
   useToast,
   VStack,
 } from '@chakra-ui/react';
 import { useAddVideoMetadataMutation } from '../../../services/authAPI';
 import { convertToBase64 } from '../../../common/utils';
 import * as Yup from 'yup';
-import { Field, FieldArray, Form, Formik } from 'formik';
+import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
 import FilePicker from 'chakra-ui-file-picker';
 import { AddIcon, Icon, MinusIcon } from '@chakra-ui/icons';
 
@@ -62,7 +62,7 @@ const MetadataForm = ({setVideoId, step, setStep, handles}) => {
         Yup.string()
       )
       .required('Must add tags')
-      .min(3, 'Minimum of 3 tags.'),
+      .min(1, 'Minimum 1 tag.'),
   });
 
   const handleThumbnail = async (e, setFieldValue) => {
@@ -149,7 +149,7 @@ const MetadataForm = ({setVideoId, step, setStep, handles}) => {
                          id={'metadataVideoTitleInput'}
                          value={values.title}
                   />
-                  {errors.title && touched.title && <FormErrorMessage id={'nickNameErrorMessage'}> Title is required.</FormErrorMessage>}
+                  {errors.title && touched.title && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="title" /></Text>}
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.description && touched.description)}
@@ -163,7 +163,7 @@ const MetadataForm = ({setVideoId, step, setStep, handles}) => {
                          onBlur={handleBlur}
                          value={values.description}
                   />
-                  {errors.description && touched.description && <FormErrorMessage>Description is required.</FormErrorMessage>}
+                  {errors.description && touched.description && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="description" /></Text>}
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.description && touched.description)}
@@ -190,7 +190,8 @@ const MetadataForm = ({setVideoId, step, setStep, handles}) => {
                       </>
                     )}
                   />
-                  {errors.tags && touched.tags && <FormErrorMessage>Tags are required.</FormErrorMessage>}
+                  {errors.tags && touched.tags && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="tags" /></Text>}
+
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.visibility && touched.visibility)}
@@ -206,7 +207,8 @@ const MetadataForm = ({setVideoId, step, setStep, handles}) => {
                     <option value='public' id={'userTypeSimple'}>Public</option>
                   </Select>
 
-                  {errors.visibility && touched.visibility && <FormErrorMessage>Visibility is required.</FormErrorMessage>}
+                  {errors.visibility && touched.visibility && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="visibility" /></Text>}
+
                 </FormControl>
                 <HStack w={'100%'} justifyContent={"space-evenly"}>
                   <Button disabled={isSubmitting}
