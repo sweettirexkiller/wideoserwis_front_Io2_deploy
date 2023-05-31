@@ -31,8 +31,6 @@ const ProfileNavigate = () => {
     }
   }
 
-
-
   return (
     <VStack
       direction={'row'}
@@ -46,10 +44,10 @@ const ProfileNavigate = () => {
       <Tabs marginX={0} paddingX={0}>
         <TabList width={'calc(100vw)'} display={'flex'} marginX={0}>
           {/*{user && user.role === 'admin' && <Tab>Admin Panel</Tab>}*/}
-          {user && user.userType === 'creator' &&  <Tab>Your Videos</Tab>}
+          {user && user.userType === 'Creator' &&  <Tab>Your Videos</Tab>}
           <Tab>Your Playlist</Tab>
           <Tab><div id={'EditProfileNavTab'}>Edit Profile</div></Tab>
-          {user && user.userType === 'creator' &&
+          {user && user.userType === 'Creator' &&
             <Tab>
               <Button>Add Video<IconButton
                 colorScheme='green'
@@ -63,7 +61,7 @@ const ProfileNavigate = () => {
         </TabList>
 
         <TabPanels width={'full'}>
-          {user && user.userType === 'creator' &&
+          {user && user.userType === 'Creator' &&
             <TabPanel h={'full'} bg={'gray.50'}>
               <YourVideos token={token} />
             </TabPanel>
@@ -77,7 +75,7 @@ const ProfileNavigate = () => {
             <Profile />
           </TabPanel>
           {
-            user && user.userType === 'creator' &&
+            user && user.userType === 'Creator' &&
             <TabPanel h={'full'} bg={'gray.50'} paddingY={5} minH={'calc(80vh)'}>
               <AddVideo />
             </TabPanel>
