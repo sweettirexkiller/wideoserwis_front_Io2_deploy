@@ -1,5 +1,6 @@
 import React from  'react';
 import { Box } from '@chakra-ui/react';
+import { API_URL } from '../../../services/auth.service';
 
 const VideoPlayer = ({id}) => {
   const token = JSON.parse(localStorage.getItem('token'));
@@ -8,7 +9,7 @@ const VideoPlayer = ({id}) => {
     <Box width={'full'}>
       <video autoPlay={false} controls="true"   width={'100%'} height={'100%'}>
         <source
-          src={`https://localhost:7180/api/video/${id}?access_token=${token.token}`}
+          src={`${API_URL}/api/video/${id}?access_token=${token.token}`}
           type="video/mp4"
         />
       </video>
