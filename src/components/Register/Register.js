@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import { clearMessage } from '../../slices/messege';
 import { register } from '../../slices/auth';
@@ -109,7 +109,7 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <VStack minHeight={'calc(80vh)'} h={'full'}>
     <Center paddingY={10}>
       <Flex>
         <Formik
@@ -172,7 +172,7 @@ const Register = () => {
                          id={'registerNicknameInput'}
                          value={values.nickName}
                   />
-                  {errors.nickName && touched.nickName && <FormErrorMessage id={'nickNameErrorMessage'}>Nick name is required.</FormErrorMessage>}
+                  {errors.nickName && touched.nickName && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="nickName" /></Text>}
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.firstname && touched.firstname)}
@@ -186,7 +186,8 @@ const Register = () => {
                          onBlur={handleBlur}
                          value={values.firstname}
                   />
-                  {errors.firstname && touched.firstname && <FormErrorMessage>First Name is required.</FormErrorMessage>}
+                  {errors.firstname && touched.firstname && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="firstname" /></Text>}
+
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.surname && touched.surname)}
@@ -200,7 +201,9 @@ const Register = () => {
                          onBlur={handleBlur}
                          value={values.lastName}
                   />
-                  {errors.surname && touched.surname && <FormErrorMessage>Last Name is required.</FormErrorMessage>}
+
+                  {errors.surname && touched.surname && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="surname" /></Text>}
+
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.userType && touched.userType)}
@@ -216,7 +219,8 @@ const Register = () => {
                     <option value='simple' id={'userTypeSimple'}>Simple</option>
                   </Select>
 
-                  {errors.userType && touched.userType && <FormErrorMessage>User type is required.</FormErrorMessage>}
+                  {errors.userType && touched.userType && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="userType" /></Text>}
+
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.email && touched.email)}
@@ -229,7 +233,7 @@ const Register = () => {
                           id={'registerEmailInput'}
                           value={values.email}
                           placeholder='E-mail'/>
-                  {errors.email && touched.email && <FormErrorMessage>Invalid email address</FormErrorMessage>}
+                  {errors.email && touched.email && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="email" /></Text>}
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.password && touched.password)}
@@ -243,7 +247,9 @@ const Register = () => {
                          onBlur={handleBlur}
                          value={values.password}
                   />
-                  {errors.password && touched.password && <FormErrorMessage id={'passwordErrorMessage'}>Password is required.{errors.password}</FormErrorMessage>}
+
+                  {errors.password && touched.password && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="password" /></Text>}
+
                 </FormControl>
                 <FormControl isRequired
                              isInvalid={(errors.confirm && touched.confirm)}
@@ -257,7 +263,8 @@ const Register = () => {
                          onBlur={handleBlur}
                          value={values.confirm}
                   />
-                  {errors.confirm && touched.confirm && <FormErrorMessage>{errors.confirm}</FormErrorMessage>}
+                  {errors.confirm && touched.confirm && <Text fontSize={'sm'} color={'red'}><ErrorMessage name="confirm" /></Text>}
+
                 </FormControl>
                 <HStack w={'100%'} justifyContent={"space-evenly"}>
                   <Button disabled={isSubmitting}
@@ -282,7 +289,7 @@ const Register = () => {
         </Alert>
       )}
       </Center>
-    </div>
+    </VStack>
   );
 };
 

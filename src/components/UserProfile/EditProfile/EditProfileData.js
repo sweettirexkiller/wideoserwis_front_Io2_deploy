@@ -35,12 +35,12 @@ const EditProfileData = ({ onDeleteAccountDialog, data})=> {
 
 
   const initialValues = {
-    nickName: data ? data.nickname : null,
-    email: data ? data.email : null,
-    firstname:data ? data.name : null,
-    surname: data ? data.surname : null,
-    userType: data ? data.userType : null,
-    avatarImage: data ? data.avatarImage : null
+    nickName: user ? user.nickname : null,
+    email: user ? user.email : null,
+    firstname:user ? user.name : null,
+    surname: user ? user.surname : null,
+    userType: user ? user.userType : null,
+    avatarImage: user ? user.avatarImage : null
   };
 
   const validationSchema = Yup.object().shape({
@@ -194,10 +194,10 @@ const EditProfileData = ({ onDeleteAccountDialog, data})=> {
                       name="userType"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.userType === 0 ? "viewer" : "creator" }
+                      value={values.userType === "Creator" ? "creator" : "simple" }
               disabled={true}>
                 <option value='creator'>Creator</option>
-                <option value='viewer'>Viewer</option>
+                <option value='simple'>Simple</option>
               </Select>
 
               {errors.userType && touched.userType && <FormErrorMessage>User type is required.</FormErrorMessage>}

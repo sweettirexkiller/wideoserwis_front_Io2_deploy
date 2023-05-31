@@ -31,7 +31,7 @@ const EditForm = ({isOpen,onOpen, onClose, cancelRef, data}) => {
   return (
     <>
       <Flex
-        minH={'100vh'}
+        minH={'80vh'}
         width={'100%'}
         align={'center'}
         justify={'center'}

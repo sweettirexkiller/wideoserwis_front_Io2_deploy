@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, IconButton, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
+import { Button, Center, IconButton, Tab, TabList, TabPanel, TabPanels, Tabs, Text, VStack } from '@chakra-ui/react';
 import Profile from './Profile';
 import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -13,6 +13,8 @@ import { logout } from '../../slices/auth';
 const ProfileNavigate = () => {
 
   const { isLoggedIn, token } = useSelector((state) => state.auth);
+  const {data:user, refetch} = useGetUserByIdQuery(token);
+  console.log(user);
 
   if (!isLoggedIn) {
     logout();
@@ -43,33 +45,43 @@ const ProfileNavigate = () => {
 
       <Tabs marginX={0} paddingX={0}>
         <TabList width={'calc(100vw)'} display={'flex'} marginX={0}>
-          <Tab>Your Videos</Tab>
+          {/*{user && user.role === 'admin' && <Tab>Admin Panel</Tab>}*/}
+          {user && user.userType === 'creator' &&  <Tab>Your Videos</Tab>}
           <Tab>Your Playlist</Tab>
           <Tab><div id={'EditProfileNavTab'}>Edit Profile</div></Tab>
-          <Tab>
-            <Button>Add Video<IconButton
-            colorScheme='green'
-            aria-label='Search database'
-            size={'xs'}
-            marginLeft={2}
-            icon={<AddIcon />}
-          /></Button>
+          {user && user.userType === 'creator' &&
+            <Tab>
+              <Button>Add Video<IconButton
+                colorScheme='green'
+                aria-label='Search database'
+                size={'xs'}
+                marginLeft={2}
+                icon={<AddIcon />}
+              /></Button>
             </Tab>
+          }
         </TabList>
 
         <TabPanels width={'full'}>
-          <TabPanel h={'full'} bg={'gray.50'}>
-            <YourVideos token={token}/>
-          </TabPanel>
+          {user && user.userType === 'creator' &&
+            <TabPanel h={'full'} bg={'gray.50'}>
+              <YourVideos token={token} />
+            </TabPanel>
+          }
           <TabPanel h={'full'} bg={'gray.50'} minH={'calc(80vh)'}>
-            <p>Your "Watch later" playlist should be here.</p>
+            <Center minHeight={'calc(70vh)'}>
+              <Text>Your playlists will be here.</Text>
+            </Center>
           </TabPanel>
           <TabPanel h={'full'} padding={0}>
             <Profile />
           </TabPanel>
-          <TabPanel h={'full'} bg={'gray.50'} paddingY={5} minH={'calc(80vh)'}>
-            <AddVideo/>
-          </TabPanel>
+          {
+            user && user.userType === 'creator' &&
+            <TabPanel h={'full'} bg={'gray.50'} paddingY={5} minH={'calc(80vh)'}>
+              <AddVideo />
+            </TabPanel>
+          }
         </TabPanels>
       </Tabs>
     </VStack>
