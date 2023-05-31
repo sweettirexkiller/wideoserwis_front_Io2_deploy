@@ -16,7 +16,6 @@ const CommentSection = ({videoId}) => {
 
   let comments =  isSuccess ? data.comments : [];
 
-  console.log(comments);
 
   return (
     <Box width={'full'} marginTop={5} marginLeft={8}>

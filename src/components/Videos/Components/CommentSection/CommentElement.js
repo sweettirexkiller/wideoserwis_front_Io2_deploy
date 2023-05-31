@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   Box,
@@ -8,11 +8,11 @@ import {
   Heading,
   HStack,
   IconButton,
-  Input, Spinner,
+  Spinner,
   Text,
 
 } from '@chakra-ui/react';
-import { ArrowRightIcon, DeleteIcon } from '@chakra-ui/icons';
+import { ChevronUpIcon, DeleteIcon } from '@chakra-ui/icons';
 import Responses from './Responses';
 import {
   useGetAllCommentsOfVideoQuery,
@@ -20,10 +20,13 @@ import {
   useRemoveCommentMutation,
 } from '../../../../services/authAPI';
 import { useSelector } from 'react-redux';
+import Reply from './Reply';
+import ShowResponses from './ShowResponses';
 
 const CommentElement = ({comment, videoId}) => {
-  console.log(comment);
-  const [removeComment, {isSuccess,isLoading}] = useRemoveCommentMutation();
+  // console.log(comment);
+  const [isShowResponses, setIsShowResponses] = useState(false);
+  const [removeComment, {isLoading}] = useRemoveCommentMutation();
   const { token } = useSelector((state) => state.auth);
   const {data:user, isLoading: isUserLoading} = useGetUserByIdQuery(token);
   const {refetch: refetchComments} = useGetAllCommentsOfVideoQuery(videoId);
@@ -69,13 +72,10 @@ const CommentElement = ({comment, videoId}) => {
             <Text>{comment.content}</Text>
           </Box>
 
-          {comment.hasResponses && <Responses comment={comment}/>}
-
-            <HStack width={'full'} justifyContent={'flex-end'} marginY={2}>
-              <ArrowRightIcon/>
-              <Input type={'text'} width={'80%'} borderRadius={0} height={8}/>
-              <Button backgroundColor={'gray.800'} borderRadius={0} size={'sm'}><Text fontSize='sm' color={'white'}>Reply</Text></Button>
-            </HStack>
+          {comment.hasResponses && !isShowResponses && <Responses setIsShowResponses={setIsShowResponses} comment={comment}/>}
+          {isShowResponses && <Button onClick={()=>setIsShowResponses(false)} size={'xs'} variant={'link'}>Hide responses <ChevronUpIcon paddingTop={1}/></Button>}
+          {isShowResponses && <ShowResponses comment={comment}/>}
+          <Reply comment={comment} videoId={videoId} setIsShowResponses={setIsShowResponses}/>
 
         </CardBody>
       </Card>

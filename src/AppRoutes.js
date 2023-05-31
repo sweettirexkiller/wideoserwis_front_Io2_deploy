@@ -7,7 +7,8 @@ import SuccessRegister from './components/SuccessRegister';
 import Videos from './components/Videos/Videos';
 import SuccessDeleting from './components/UserProfile/SuccessDeleting';
 import ProfileNavigate from './components/UserProfile/ProfileNavigate';
-import SingleVideoElement from './components/Videos/SingleVideoElement';
+import SingleVideoPage from './components/Videos/SingleVideoPage';
+import SingleVideoEditPage from './components/Videos/SingleVideoEditPage';
 
 const AppRoutes = [
   {
@@ -42,7 +43,11 @@ const AppRoutes = [
   },
   {
     path: '/videos/:id',
-    element: <SingleVideoElement/>
+    element: <SingleVideoPage/>
+  },
+  {
+    path: '/videos/edit/:id',
+    element: <SingleVideoEditPage/>
   }
 ];
 

@@ -8,15 +8,23 @@ import { useGetUserByIdQuery } from '../../services/authAPI';
 import YourVideos from './YourVideos/YourVideos';
 import { AddIcon } from '@chakra-ui/icons';
 import AddVideo from './AddVideo/AddVideo';
+import { logout } from '../../slices/auth';
 
 const ProfileNavigate = () => {
-  const { token } = useSelector((state) => state.auth);
+
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
+
+  if (!isLoggedIn) {
+    logout();
+    return <Navigate to="/log-in" />;
+  }
 
   if (!token) {
     return <Navigate to="/log-in" />;
   } else if (token.token) {
     const decode = JSON.parse(atob(token.token.split('.')[1]));
     if (decode.exp * 1000 < new Date().getTime()) {
+      logout();
       return <Navigate to="/log-in" />;
     }
   }

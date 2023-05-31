@@ -51,7 +51,11 @@ const VideoElement = ({video}) => {
               }}>
                 Watch video
               </Button>
-              <Button>Edit</Button>
+              <Button
+                onClick={()=>{
+                  //redirect to video page
+                  navigate(`/videos/edit/${video.id}`);
+                }}>Edit</Button>
             </HStack>
 
         </CardFooter>

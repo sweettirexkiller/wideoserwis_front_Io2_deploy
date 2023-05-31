@@ -85,6 +85,15 @@ export const authAPI = createApi({
         },
       }),
 
+      deleteVideo: builder.mutation({
+        query(videoId) {
+          return {
+            url: `/api/video?id=${videoId}`,
+            method: 'DELETE',
+          }
+        },
+      }),
+
       // SUBSCRIPTIONS
       getSubscriptions:builder.query({
         query: (id ) => `/api/subscriptions?id=${id}`,
@@ -109,6 +118,27 @@ export const authAPI = createApi({
       //PLAYLISTS
       getUserPlaylists:builder.query({
         query: (id ) => `/api/playlist/user?id=${id}`,
+      }),
+
+      getPlaylists:builder.query({
+        query: (id ) => `/api/playlist/user?id=${id}`,
+      }),
+
+      getVideosInPlaylist: builder.query({
+          query: (id ) => `/api/playlist/video?id=${id}`,
+        }),
+
+      addPlaylist: builder.mutation({
+        query({name, visibility}) {
+          return {
+            url: `/api/playlist/details`,
+            method: 'POST',
+            body:{
+              name: name,
+              visibility: visibility
+            }
+          }
+        },
       }),
 
       addVideoToPlaylist: builder.mutation({
@@ -190,24 +220,39 @@ export const authAPI = createApi({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
+
+  //user
   useGetUserByIdQuery,
   useDeleteUserMutation,
   useUpdateUserMutation,
   useGetUserVideosQuery,
+
+  //video
   useAddVideoMetadataMutation,
   useAddVideoFileMutation,
   useGetVideoMetadataQuery,
+  useDeleteVideoMutation,
+
+  //subscriptions
   useGetSubscriptionsQuery,
   useAddSubscriptionMutation,
   useDeleteSubscriptionMutation,
+
+  //playlists
   useGetUserPlaylistsQuery,
+  useAddPlaylistMutation,
+  useGetVideosInPlaylistQuery,
   useAddVideoToPlaylistMutation,
   useRemoveVideoFromPlaylistMutation,
+
+  //comments
   useGetAllCommentsOfVideoQuery,
   useRemoveCommentMutation,
   useAddCommentToVideoMutation,
   useGetResponseOnCommentQuery,
   useAddResponseToCommentMutation,
+
+  //reactions
   useGetVideoReactionsQuery,
   useAddReactionToVideoMutation
 } = authAPI;

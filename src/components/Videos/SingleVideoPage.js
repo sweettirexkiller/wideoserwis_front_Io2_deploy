@@ -13,7 +13,7 @@ import CommentSection from './Components/CommentSection/CommentSection';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const SingleVideoElement = () => {
+const SingleVideoPage = () => {
   const navigate = useNavigate()
   const { isLoggedIn } = useSelector((state) => state.auth);
 
@@ -43,4 +43,4 @@ const SingleVideoElement = () => {
   return content;
 };
 
-export default SingleVideoElement;
+export default SingleVideoPage;

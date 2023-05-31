@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Button,
   Checkbox,
-  FormControl,
+  FormControl, FormErrorMessage,
   FormLabel,
   Input,
   Modal,
@@ -19,30 +19,68 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
-  Portal,
-  Text,
+  Portal, Select, Spinner,
+  Text, Textarea,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
-import { useGetUserPlaylistsQuery, useGetUserByIdQuery, useAddVideoToPlaylistMutation, useRemoveVideoFromPlaylistMutation } from '../../../../services/authAPI';
+import {
+  useGetUserPlaylistsQuery,
+  useGetUserByIdQuery,
+  useAddPlaylistMutation,
+  useAddVideoToPlaylistMutation,
+} from '../../../../services/authAPI';
 import { useSelector } from 'react-redux';
+import * as Yup from 'yup';
+import { ErrorMessage, Form, Formik } from 'formik';
+import PlaylistListElement from './PlaylistListElement';
 
-const AddToPlaylist = () => {
+const AddToPlaylist = ({videoId}) => {
 
 
   const { token } = useSelector((state) => state.auth);
   const {data: user, isLoading: isUserLoading} = useGetUserByIdQuery(token);
-  const {data : playlists, isLoading, isSuccess, isError, error} = useGetUserPlaylistsQuery(!isUserLoading && user.id);
-
-
-  console.log(playlists);
-
+  const {data : playlists, isLoading, isSuccess, refetch: refetchPlaylists} = useGetUserPlaylistsQuery(!isUserLoading && user.id);
+  const [addPlaylist, {isLoading: isAddPlaylistLoading, isSuccess: isAddingPlaylistSuccess}] = useAddPlaylistMutation();
+  const [addVideoToPlaylist, {isLoading: isAddVideoToPlaylistLoading}] = useAddVideoToPlaylistMutation();
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const initialValues = {
+    name: '',
+    visibility: 'Private',
+  };
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, 'Too Short!')
+      .max(500, 'Too Long!')
+      .required('Required.'),
+    visibility: Yup.string()
+      .required('Required.')
+  });
+
+  const handleAddPlaylist = (values)  => {
+    addPlaylist(values)
+      .then((res)=>{
+
+        addVideoToPlaylist({ playlistId: res.data.id, videoId: videoId})
+          .then(()=>{
+            refetchPlaylists();
+            onClose();
+          })
+          .catch(()=>{});
+
+        refetchPlaylists();
+        onClose();
+
+      })
+      .catch(()=>{});
+  };
+
 
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
-
 
   return (
     <>
@@ -68,21 +106,18 @@ const AddToPlaylist = () => {
           <PopoverCloseButton />
           <PopoverBody>
             <VStack alignItems={'flex-start'}>
-              <Checkbox size='md' colorScheme='pink' defaultChecked={false}>
-                Playlist 1
-              </Checkbox>
-              <Checkbox size='md' colorScheme='pink'>
-                Playlist 2
-              </Checkbox>
-              <Checkbox size='md' colorScheme='pink'>
-                Playlist 3
-              </Checkbox>
+              {isLoading && <Spinner size={'xs'}/>}
+              {isSuccess && playlists.map((playlist) => {
+                return (
+                  <PlaylistListElement playlist={playlist}/>
+                );
+              })}
             </VStack>
 
           </PopoverBody>
           <PopoverFooter justifyContent={'flex-end'} display={'flex'} flexDirection={'row'}>
             <Button colorScheme='teal' size={'sm'} onClick={onOpen}>
-              <Text fontSize={'xs'}> New PLaylist</Text>
+              <Text fontSize={'xs'}>New PLaylist</Text>
               <AddIcon marginLeft={3}/>
             </Button>
           </PopoverFooter>
@@ -101,19 +136,76 @@ const AddToPlaylist = () => {
         <ModalContent>
           <ModalHeader>Create new playlist</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl mt={4}>
-              <FormLabel>Name</FormLabel>
-              <Input placeholder='Playlist 1' />
-            </FormControl>
-          </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
-              Create
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={(values, { setSubmitting }) => {
+              setSubmitting(true);
+              handleAddPlaylist(values);
+            }}
+            width={'full'}
+          >
+            {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+              }) => (
+
+              <Form width={'full'} display={'flex'} flexDirection={'row'}>
+
+                <ModalBody pb={6}>
+
+                    <FormControl isRequired
+                                 isInvalid={(errors.name && touched.name)}
+                                 width={'full'}
+                                 mt={4}
+                    >
+
+                      <FormLabel>Name</FormLabel>
+                      <Input placeholder='Playlist 1' name="name"  onChange={handleChange} width={520}
+                             onBlur={handleBlur}
+                             value={values.name}  />
+
+                      {errors.name && touched.name && <Text fontSize={'xs'} color={'red'}><ErrorMessage name="name" /></Text>}
+
+                    </FormControl>
+
+                    <FormControl isRequired
+                                 isInvalid={(errors.visibility && touched.visibility)}
+                    >
+                      <FormLabel>Visibility</FormLabel>
+
+                      <Select placeholder='visibility'
+                              name="visibility"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.visibility}>
+                        <option value='Private'>Private</option>
+                        <option value='Public'>Public</option>
+                      </Select>
+
+                      {errors.visibility && touched.visibility && <Text fontSize={'xs'} color={'red'}><ErrorMessage name="visibility" /></Text>}
+                    </FormControl>
+
+
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button colorScheme='blue' mr={3}
+                          onClick={(e)=>{handleSubmit()}}>
+                    Create {(isAddPlaylistLoading  || isAddVideoToPlaylistLoading)&&  <Spinner size='sm' />}
+                  </Button>
+                  <Button onClick={onClose}>Cancel</Button>
+                </ModalFooter>
+
+              </Form>
+            )}
+          </Formik>
         </ModalContent>
       </Modal>
 
